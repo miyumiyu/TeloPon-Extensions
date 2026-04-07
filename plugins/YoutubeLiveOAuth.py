@@ -1584,6 +1584,14 @@ class YoutubeLiveOAuth(BasePlugin):
         cmds.append("* 視聴者数取得: [CMD]YT:viewers")
         triggers.append("* 「今何人？」→ [CMD]YT:viewers")
 
+        # コメント種類の説明
+        addon += (
+            "\n# 【YouTubeコメントの種類】\n"
+            "* [COMMENT] - 通常の視聴者コメント\n"
+            "* [SUPERCHAT] - スーパーチャット（投げ銭）。金額が含まれます。感謝を込めて特別に反応してください。\n"
+            "* [SUPERSTICKER] - スーパーステッカー（投げ銭スタンプ）。感謝を込めて特別に反応してください。\n"
+        )
+
         if cmds:
             addon += "\n# 【YouTube操作コマンド】\n"
             addon += "テロップテキストの末尾（[MEMO]の直前）に記述してください。\n"
