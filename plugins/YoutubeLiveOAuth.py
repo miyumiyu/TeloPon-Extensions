@@ -1723,6 +1723,30 @@ class YoutubeLiveOAuth(BasePlugin):
                             if avatar_url:
                                 avatar_map[name] = avatar_url
 
+                        elif msg_type == "superChatEvent":
+                            sc = snippet.get("superChatDetails", {})
+                            amount = sc.get("amountDisplayString", "")
+                            user_comment = sc.get("userComment", "")
+                            name = author.get("displayName", "unknown")
+                            if user_comment:
+                                comments.append(f"[SUPERCHAT] {name} ({amount}): {user_comment}")
+                            else:
+                                comments.append(f"[SUPERCHAT] {name} ({amount})")
+                            avatar_url = author.get("profileImageUrl", "")
+                            if avatar_url:
+                                avatar_map[name] = avatar_url
+                            logger.info(f"[{self.PLUGIN_NAME}] スーパーチャット: {name} {amount}")
+
+                        elif msg_type == "superStickerEvent":
+                            ss = snippet.get("superStickerDetails", {})
+                            amount = ss.get("amountDisplayString", "")
+                            name = author.get("displayName", "unknown")
+                            comments.append(f"[SUPERSTICKER] {name} ({amount})")
+                            avatar_url = author.get("profileImageUrl", "")
+                            if avatar_url:
+                                avatar_map[name] = avatar_url
+                            logger.info(f"[{self.PLUGIN_NAME}] スーパーステッカー: {name} {amount}")
+
                     if comments and self.plugin_queue:
                         self.send_avatar_map(self.plugin_queue, avatar_map)
                         combined = "\n".join(comments)
