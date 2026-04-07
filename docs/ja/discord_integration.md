@@ -8,12 +8,11 @@
 
 ## 📥 ステップ1：プラグインの導入（インストール）
 
-TeloPon本体にはこの拡張機能が含まれていないため、まずはご自身のTeloPonに追加します。
+📥 **[discord_integration.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py)**
 
-1. 🔗[ TeloPon 公式拡張プラグインパック v1.0 (Discord & Slack)](https://github.com/miyumiyu/TeloPon/releases/tag/plugins-v1.0)
-から、**`discord_integration.py`** というファイルをダウンロードします。
+1. 上のリンクからファイルをダウンロードします。
 2. お使いのパソコンにある `TeloPon-XXX` フォルダ（本体のフォルダ）を開きます。
-3. その中にある **`plugins`** フォルダの中に、ダウンロードした `discord_integration.py` ファイルをそのまま入れます。
+3. その中にある **`plugins`** フォルダの中に、ダウンロードしたファイルをそのまま入れます。
 4. TeloPonを起動（または再起動）します。メイン画面の「🔌 拡張機能」の一覧に **「💬 Discordリアルタイム連携」** が追加されていればインストール成功です！
 
 ---

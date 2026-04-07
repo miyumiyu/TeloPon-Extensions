@@ -1,6 +1,6 @@
 # 🎮 VCI OSC テロップ (VciOscPlugin.py)
 
-> 📥 **[プラグインをダウンロード](https://github.com/miyumiyu/TeloPon/releases/download/plugins-v1.3/VciOscPlugin.py)**
+📥 **[VciOscPlugin.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py)**
 
 このプラグインは、AIが出力したテロップを **OSC（OpenSound Control）** プロトコル経由で **VirtualCast の VCI** にリアルタイム送信します。
 VirtualCast のバーチャル空間内にテロップを表示させることができます。

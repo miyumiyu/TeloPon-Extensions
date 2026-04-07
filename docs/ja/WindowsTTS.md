@@ -1,5 +1,7 @@
 # 🔊 Windows 読み上げプラグイン (WindowsTTS.py)
 
+📥 **[WindowsTTS.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py)**
+
 Windows標準の音声合成エンジン（SAPI5）を使って、AIが出力したテロップのテキストを自動的に読み上げるプラグインです。  
 追加の外部ソフトは不要で、Windowsに標準搭載されている音声がそのまま使えます。
 

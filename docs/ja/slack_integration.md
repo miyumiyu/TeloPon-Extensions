@@ -9,11 +9,10 @@
 
 ## 📥 ステップ1：プラグインの導入と準備
 
-まずはTeloPon本体に拡張機能を追加し、通信に必要なライブラリを準備します。
+📥 **[slack_integration.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py)**
 
-1. 🔗[ TeloPon 公式拡張プラグインパック v1.0 (Discord & Slack)](https://github.com/miyumiyu/TeloPon/releases/tag/plugins-v1.0)
-から、**`slack_integration.py`** をダウンロードします。
-2. TeloPon本体のフォルダ内にある **`plugins`** フォルダに、ダウンロードした `slack_integration.py` ファイルを入れます。
+1. 上のリンクからファイルをダウンロードします。
+2. TeloPon本体のフォルダ内にある **`plugins`** フォルダに、ダウンロードしたファイルを入れます。
 3. TeloPonを起動し、メイン画面の「🔌 拡張機能」に **「🏢 Slackコメント連携」** が追加されていれば成功です！
 
 ---

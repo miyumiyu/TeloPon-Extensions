@@ -1,6 +1,6 @@
 # 🔊 VOICEVOX読み上げ (voicevox_plugin.py)
 
-> 📥 **[プラグインをダウンロード](https://github.com/miyumiyu/TeloPon/releases/download/plugins-v1.3/voicevox_plugin.py)**
+📥 **[voicevox_plugin.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py)**
 
 このプラグインは、AIが出力したテロップのテキストを **VOICEVOX** の音声合成エンジンで読み上げます。
 多彩なキャラクターボイスと細かな音声調整で、配信をより賑やかに演出できます。

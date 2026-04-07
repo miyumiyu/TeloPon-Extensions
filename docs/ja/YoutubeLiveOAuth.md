@@ -1,5 +1,7 @@
 # ▶️ YouTube OAuth連携ツール (YoutubeLiveOAuth.py)
 
+📥 **[YoutubeLiveOAuth.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py)**
+
 YouTube Data API v3 + OAuth2 による高機能 YouTube Live 連携プラグインです。  
 コメントの読み書き、アンケート、タイトル変更、視聴者数取得などを配信者の音声で操作できます。
 
