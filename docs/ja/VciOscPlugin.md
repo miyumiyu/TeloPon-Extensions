@@ -55,7 +55,7 @@ end, {ExportOscType.String})
 
 TeloPon のメイン画面右側、「拡張機能（プラグイン）」パネルにある **「VCI OSC テロップ」** の **「操作パネル」** ボタンをクリックします。
 
-<img width="400" alt="VCI OSC テロップ設定画面" src="../../images/VciOscPlugin.png" />
+<img width="400" alt="VCI OSC テロップ設定画面" src="../images/VciOscPlugin.png" />
 
 ### 2. OSC 送信 ON
 
