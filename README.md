@@ -1,8 +1,10 @@
+[English](README_en.md) | [한국어](README_ko.md) | [Русский](README_ru.md)
+
 # TeloPon Extensions
 
 TeloPon の拡張パックです。プラグイン・プロンプト・テーマなど、標準に同梱されないオプション機能を提供します。
 
-[English](README_en.md) | [한국어](README_ko.md) | [Русский](README_ru.md)
+📖 [TeloPon 本体のドキュメントはこちら](https://github.com/miyumiyu/TeloPon)
 
 ---
 
@@ -22,14 +24,14 @@ TeloPon の拡張パックです。プラグイン・プロンプト・テーマ
 
 ## プラグイン一覧
 
-| プラグイン | Ver | 説明 | 詳細 | DL |
-|---|---|---|---|---|
-| YoutubeLiveOAuth | 1.00 | YouTube OAuth連携（コメント読み書き・アンケート・タイトル変更） | [詳細](docs/ja/YoutubeLiveOAuth.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py) |
-| WindowsTTS | 1.00 | Windows標準音声で読み上げ | [詳細](docs/ja/WindowsTTS.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py) |
-| VciOscPlugin | 1.00 | VirtualCast VCI へOSC送信 | [詳細](docs/ja/VciOscPlugin.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
-| discord_integration | 1.00 | Discordチャンネル連携 | [詳細](docs/ja/discord_integration.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
-| slack_integration | 1.00 | Slackチャンネル連携 | [詳細](docs/ja/slack_integration.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
-| voicevox_plugin | 1.00 | VOICEVOX音声合成 | [詳細](docs/ja/voicevox_plugin.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
+| プラグイン | Ver | 説明 | DL |
+|---|---|---|---|
+| [YouTube OAuth連携](docs/ja/YoutubeLiveOAuth.md) | 1.00 | YouTube Data API + OAuth2 による高機能連携。コメントの読み書き、アンケート作成・集計、配信タイトル変更、視聴者数取得など。  [👉 詳細はこちら](docs/ja/YoutubeLiveOAuth.md) / [GCP設定ガイド（画像付き）](docs/ja/YoutubeLiveOAuth_GCP_Setup.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py) |
+| [Windows TTS](docs/ja/WindowsTTS.md) | 1.00 | Windows標準の音声合成エンジン（SAPI5）でテロップを自動読み上げ。音声・速度・ピッチ・音量の調整、再生デバイスの選択に対応。  [👉 詳細はこちら](docs/ja/WindowsTTS.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py) |
+| [VCI OSC テロップ](docs/ja/VciOscPlugin.md) | 1.00 | [VirtualCast](https://virtualcast.jp/) の VCI に OSC（OpenSound Control）でテロップを送信。VR空間内にAIのテロップを表示できます。  [👉 詳細はこちら](docs/ja/VciOscPlugin.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
+| [Discord連携](docs/ja/discord_integration.md) | 1.00 | [Discord](https://discord.com/) サーバーの指定チャンネルのコメントをリアルタイムに取得し、AIに注入。招待URL自動生成機能付き。  [👉 詳細はこちら](docs/ja/discord_integration.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
+| [Slack連携](docs/ja/slack_integration.md) | 1.00 | [Slack](https://slack.com/) ワークスペースの指定チャンネルのコメントを Socket Mode で遅延ゼロのリアルタイム取得。ユーザーID→名前の自動変換付き。  [👉 詳細はこちら](docs/ja/slack_integration.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
+| [VOICEVOX 読み上げ](docs/ja/voicevox_plugin.md) | 1.00 | [VOICEVOX](https://voicevox.hiroshiba.jp/) の音声合成エンジンでテロップを読み上げ。多数のキャラクターボイスとスタイルに対応。  [👉 詳細はこちら](docs/ja/voicevox_plugin.md) | [DL](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
 
 ## プロンプト一覧
 
