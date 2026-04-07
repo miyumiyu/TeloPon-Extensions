@@ -38,13 +38,12 @@ YouTube OAuth連携プラグインを使うために必要な、Google Cloud Con
 
 ## Step 3: OAuth同意画面の設定
 
-まず、画面右上のプロジェクト名が **TeloPon**（Step 2で作成したプロジェクト）になっていることを確認してください。  
+まず、画面左上のプロジェクト名が **TeloPon**（Step 2で作成したプロジェクト）になっていることを確認してください。  
 異なる場合は、プロジェクト名をクリックして切り替えてください。
 
 <img src="../images/YoutubeLiveOAuth/YoutubeLiveOAuth10.png" width="600">
 
-左メニューの「APIとサービス」→「OAuth同意画面」を選択します。  
-（または左メニューの「Google Auth Platform」を開きます）
+左上の三本線（≡）をクリックしてメニューを開き、「APIとサービス」→「OAuth同意画面」を選択します。
 
 「Google Auth Platform はまだ構成されていません」と表示されるので「開始」をクリックします。
 
