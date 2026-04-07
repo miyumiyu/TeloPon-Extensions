@@ -24,7 +24,6 @@
 
 - Windows PC
 - Microsoft PowerPoint 설치 필요
-- pywin32 (TeloPon exe 버전에 포함)
 
 ---
 

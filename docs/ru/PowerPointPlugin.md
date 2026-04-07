@@ -24,7 +24,6 @@
 
 - ПК с Windows
 - Установленный Microsoft PowerPoint
-- pywin32 (включён в exe-версию TeloPon)
 
 ---
 

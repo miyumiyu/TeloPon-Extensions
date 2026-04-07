@@ -24,7 +24,6 @@ Supports slide navigation, page jumps, blackout, and automatically injects slide
 
 - Windows PC
 - Microsoft PowerPoint installed
-- pywin32 (included in TeloPon exe version)
 
 ---
 

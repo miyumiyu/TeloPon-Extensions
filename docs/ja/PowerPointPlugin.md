@@ -24,7 +24,6 @@
 
 - Windows PC
 - Microsoft PowerPoint がインストールされていること
-- pywin32（TeloPon exe版には同梱済み）
 
 ---
 
