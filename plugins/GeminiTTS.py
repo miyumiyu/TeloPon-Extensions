@@ -23,8 +23,8 @@ except ImportError:
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "テロップ読み上げ",
-        "panel_title": "🔊 テロップ読み上げ設定",
+        "plugin_name": "Gemini TTS",
+        "panel_title": "🔊 Gemini TTS 設定",
         "label_voice": "🎙️ 音声:",
         "label_speed": "⏩ スピード:",
         "label_volume": "🔊 音量:",
@@ -43,8 +43,8 @@ _L = {
         "speed_fast": "早口",
     },
     "en": {
-        "plugin_name": "Telop TTS",
-        "panel_title": "🔊 Telop TTS Settings",
+        "plugin_name": "Gemini TTS",
+        "panel_title": "🔊 Gemini TTS Settings",
         "label_voice": "🎙️ Voice:",
         "label_speed": "⏩ Speed:",
         "label_volume": "🔊 Volume:",
@@ -63,8 +63,8 @@ _L = {
         "speed_fast": "Fast",
     },
     "ko": {
-        "plugin_name": "텔롭 읽기",
-        "panel_title": "🔊 텔롭 읽기 설정",
+        "plugin_name": "Gemini TTS",
+        "panel_title": "🔊 Gemini TTS 설정",
         "label_voice": "🎙️ 음성:",
         "label_speed": "⏩ 속도:",
         "label_volume": "🔊 볼륨:",
@@ -83,8 +83,8 @@ _L = {
         "speed_fast": "빠르게",
     },
     "ru": {
-        "plugin_name": "Озвучка телопов",
-        "panel_title": "🔊 Настройки озвучки",
+        "plugin_name": "Gemini TTS",
+        "panel_title": "🔊 Gemini TTS",
         "label_voice": "🎙️ Голос:",
         "label_speed": "⏩ Скорость:",
         "label_volume": "🔊 Громкость:",
