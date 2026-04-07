@@ -141,6 +141,11 @@ _L = {
             "[TOPIC]アンケート [MAIN]好きな色は？投票してね！ [CMD]NC:poll create 好きな色は？|赤|青|緑|黄色\n"
         ),
         # --- AI注入テキスト ---
+        "thumb_cue": (
+            "【番組ディレクターからのカンペ】\n"
+            "今モニターに映したのが本日の配信のサムネイル画像です！"
+            "この画像と番組タイトル・説明文を踏まえて番組を盛り上げてください。"
+        ),
         "gift_cue": (
             "【番組ディレクターからのカンペ】\n"
             "{name}さんからギフト「{item}」({point}pt)が届きました！感謝の言葉を述べてください。"
@@ -262,6 +267,11 @@ _L = {
             "* Fixed/pinned: [CMD]NC:opcomment /perm text\n"
             "* Delete operator comment: [CMD]NC:opcomment delete\n"
         ),
+        "thumb_cue": (
+            "[Cue from Director]\n"
+            "The image now shown on the monitor is today's stream thumbnail! "
+            "Use this image along with the stream title and description to liven up the show."
+        ),
         "gift_cue": (
             "[Cue from Director]\n"
             "{name} sent a gift \"{item}\" ({point}pt)! Please express your gratitude."
@@ -379,6 +389,11 @@ class NiconicoLivePlugin(BasePlugin):
         # エモーション集計
         self._emotion_count = 0
         self._emotion_last_notify = 0.0
+
+        # サムネイル（AI注入用）
+        self._thumbnail_bytes: bytes | None = None  # リサイズ済み
+        self._thumbnail_mime: str = "image/jpeg"
+        self._thumb_thread: threading.Timer | None = None
 
         # コメントバッチ
         self._comment_batch: list[tuple[str, str]] = []  # (user, text)
@@ -950,14 +965,31 @@ class NiconicoLivePlugin(BasePlugin):
 
             # サムネイル取得
             self._thumb_bytes = None
+            self._thumbnail_bytes = None
             if info.thumbnail_url:
                 try:
                     import urllib.request
                     req = urllib.request.Request(info.thumbnail_url, headers={"User-Agent": "TeloPon"})
                     with urllib.request.urlopen(req, timeout=5) as resp:
-                        self._thumb_bytes = resp.read()
-                except Exception:
-                    pass
+                        raw_bytes = resp.read()
+                    self._thumb_bytes = raw_bytes  # UI表示用（そのまま）
+
+                    # AI注入用にリサイズ
+                    import io
+                    from PIL import Image
+                    img = Image.open(io.BytesIO(raw_bytes))
+                    img.thumbnail((1024, 1024))
+                    buf = io.BytesIO()
+                    fmt = "JPEG"
+                    mime = "image/jpeg"
+                    if info.thumbnail_url.lower().endswith(".png"):
+                        fmt = "PNG"
+                        mime = "image/png"
+                    img.save(buf, format=fmt)
+                    self._thumbnail_bytes = buf.getvalue()
+                    self._thumbnail_mime = mime
+                except Exception as e:
+                    logger.debug(f"{_TAG} サムネイル取得/リサイズ失敗: {e}")
 
             # 自分の配信かどうか判定
             settings = self.get_settings()
@@ -1096,6 +1128,12 @@ class NiconicoLivePlugin(BasePlugin):
         self.plugin_queue = plugin_queue
         self.is_running = True
 
+        # サムネイル画像をAIに注入（5秒後）
+        if self._thumbnail_bytes:
+            self._thumb_thread = threading.Timer(5.0, self._inject_thumbnail)
+            self._thumb_thread.daemon = True
+            self._thumb_thread.start()
+
         # NDGR ストリーミングスレッドを開始
         self._stream_thread = threading.Thread(target=self._run_stream_loop, daemon=True)
         self._stream_thread.start()
@@ -1105,11 +1143,29 @@ class NiconicoLivePlugin(BasePlugin):
 
         logger.info(f"{_TAG} ▶️ ライブ連携を開始しました ({self._nicolive_id})")
 
+    def _inject_thumbnail(self):
+        """サムネイル画像とカンペをAIに注入"""
+        if not self.is_running or not self.plugin_queue:
+            return
+        self.plugin_queue.put({
+            "type": "image",
+            "data": self._thumbnail_bytes,
+            "mime_type": self._thumbnail_mime,
+        })
+        self.plugin_queue.put({
+            "type": "text",
+            "content": _t("thumb_cue"),
+        })
+        logger.info(f"{_TAG} 📸 サムネイル画像とカンペをAIに注入しました！")
+
     def stop(self):
         self.is_running = False
         self._live_queue = None
         self._live_prompt_config = None
         self._stop_client()
+        if self._thumb_thread:
+            self._thumb_thread.cancel()
+            self._thumb_thread = None
         if self._batch_timer:
             self._batch_timer.cancel()
             self._batch_timer = None
