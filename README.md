@@ -26,7 +26,7 @@ TeloPon の拡張パックです。プラグイン・プロンプト・テーマ
 |---|---|---|
 | YoutubeLiveOAuth | YouTube OAuth連携（コメント読み書き・アンケート・タイトル変更） | [詳細](docs/ja/YoutubeLiveOAuth.md) |
 | WindowsTTS | Windows標準音声で読み上げ | [詳細](docs/ja/WindowsTTS.md) |
-| TelopTTS | Gemini TTSで読み上げ | [詳細](docs/ja/TelopTTS.md) |
+| GeminiTTS | Gemini TTSで読み上げ | [詳細](docs/ja/GeminiTTS.md) |
 | VciOscPlugin | VirtualCast VCI へOSC送信 | [詳細](docs/ja/VciOscPlugin.md) |
 | discord_integration | Discordチャンネル連携 | [詳細](docs/ja/discord_integration.md) |
 | slack_integration | Slackチャンネル連携 | [詳細](docs/ja/slack_integration.md) |

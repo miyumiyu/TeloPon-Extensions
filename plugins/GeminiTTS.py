@@ -1,5 +1,5 @@
 """
-TelopTTS - テロップ読み上げプラグイン
+GeminiTTS - テロップ読み上げプラグイン
 
 AIが出力したテロップの MAIN テキストを Gemini TTS API で音声に変換し再生します。
 TeloPon と同じ API キーを使用します。
@@ -139,9 +139,9 @@ def _strip_tags(text):
     return text.strip()
 
 
-class TelopTTSPlugin(BasePlugin):
-    PLUGIN_ID   = "telop_tts"
-    PLUGIN_NAME = "Telop TTS"
+class GeminiTTSPlugin(BasePlugin):
+    PLUGIN_ID   = "gemini_tts"
+    PLUGIN_NAME = "Gemini TTS"
     PLUGIN_TYPE = "TOOL"
 
     def __init__(self):
@@ -242,7 +242,7 @@ class TelopTTSPlugin(BasePlugin):
             try:
                 self._speak(text)
             except Exception as e:
-                logger.warning(f"[TelopTTS] 読み上げエラー: {e}")
+                logger.warning(f"[GeminiTTS] 読み上げエラー: {e}")
                 self._set_status(_t("status_error"))
                 time.sleep(1)
                 continue
@@ -255,7 +255,7 @@ class TelopTTSPlugin(BasePlugin):
 
         api_key = config.app_config.get("api_key", "")
         if not api_key:
-            logger.warning("[TelopTTS] APIキーが設定されていません")
+            logger.warning("[GeminiTTS] APIキーが設定されていません")
             self._set_status(_t("status_no_key"))
             return
 
@@ -290,7 +290,7 @@ class TelopTTSPlugin(BasePlugin):
 
         # pyaudio で再生
         if not pyaudio:
-            logger.warning("[TelopTTS] pyaudio が利用できません")
+            logger.warning("[GeminiTTS] pyaudio が利用できません")
             return
 
         p = pyaudio.PyAudio()
@@ -312,7 +312,7 @@ class TelopTTSPlugin(BasePlugin):
         finally:
             p.terminate()
 
-        logger.debug(f"[TelopTTS] 再生完了: {text[:50]}...")
+        logger.debug(f"[GeminiTTS] 再生完了: {text[:50]}...")
 
     def _set_status(self, text):
         """ステータスラベル更新（メインスレッドに委譲）"""
