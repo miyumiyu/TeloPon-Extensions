@@ -32,6 +32,7 @@
 | 💬 | [Discord](docs/ru/discord_integration.md) | 1.00 | Получение комментариев из каналов [Discord](https://discord.com/) в реальном времени.<br>Автоматическая генерация URL-приглашения.<br>👉 [Подробнее](docs/ru/discord_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
 | 🏢 | [Slack](docs/ru/slack_integration.md) | 1.00 | Получение комментариев из [Slack](https://slack.com/) без задержки через Socket Mode.<br>Авто-конвертация ID пользователей в имена.<br>👉 [Подробнее](docs/ru/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🗣️ | [VOICEVOX](docs/ru/voicevox_plugin.md) | 1.00 | Озвучка телопов движком [VOICEVOX](https://voicevox.hiroshiba.jp/).<br>Множество голосов персонажей и стилей.<br>👉 [Подробнее](docs/ru/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
+| 📊 | [PowerPoint](docs/ru/PowerPointPlugin.md) | 1.00 | Управление слайд-шоу PowerPoint голосом.<br>Следующий/предыдущий слайд, переход к странице, затемнение, начало/конец презентации.<br>Автоматическая передача заголовка и заметок слайда в ИИ.<br>👉 [Подробнее](docs/ru/PowerPointPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py) |
 
 ---
 

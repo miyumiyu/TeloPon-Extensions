@@ -32,6 +32,7 @@ TeloPon の拡張パックです。プラグイン・プロンプト・テーマ
 | 💬 | [Discord連携](docs/ja/discord_integration.md) | 1.00 | [Discord](https://discord.com/) サーバーの指定チャンネルのコメントをリアルタイムに取得し、AIに注入。<br>招待URL自動生成機能付き。<br>👉 [詳細はこちら](docs/ja/discord_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
 | 🏢 | [Slack連携](docs/ja/slack_integration.md) | 1.00 | [Slack](https://slack.com/) ワークスペースの指定チャンネルのコメントを Socket Mode で遅延ゼロ取得。<br>ユーザーID→名前の自動変換付き。<br>👉 [詳細はこちら](docs/ja/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🗣️ | [VOICEVOX 読み上げ](docs/ja/voicevox_plugin.md) | 1.00 | [VOICEVOX](https://voicevox.hiroshiba.jp/) の音声合成エンジンでテロップを読み上げ。<br>多数のキャラクターボイスとスタイルに対応。<br>👉 [詳細はこちら](docs/ja/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
+| 📊 | [PowerPoint操作](docs/ja/PowerPointPlugin.md) | 1.00 | 音声指示でPowerPointスライドショーを操作。<br>スライド送り/戻し、ページジャンプ、ブラックアウト、プレゼン開始/終了。<br>スライド切替時にタイトル・ノートをAIに自動注入。<br>👉 [詳細はこちら](docs/ja/PowerPointPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py) |
 
 ---
 
