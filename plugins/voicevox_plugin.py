@@ -1,5 +1,5 @@
 """
-VoicevoxPlugin - VOICEVOX テロップ読み上げプラグイン
+VoicevoxPlugin v1.00 - VOICEVOX テロップ読み上げプラグイン
 
 AIが出力したテロップの MAIN テキストを VOICEVOX の HTTP API で読み上げます。
 

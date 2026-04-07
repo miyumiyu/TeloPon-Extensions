@@ -1,3 +1,6 @@
+"""
+discord_integration v1.00 - Discord連携プラグイン
+"""
 import os
 import threading
 import time

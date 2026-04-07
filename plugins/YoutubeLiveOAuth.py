@@ -1,5 +1,5 @@
 """
-YoutubeLiveOAuth.py - YouTube Live OAuth2 Plugin for TeloPon
+YoutubeLiveOAuth v1.00 - YouTube Live OAuth2 Plugin for TeloPon
 =============================================================
 YouTube Data API v3 + OAuth2 による上位互換 YouTube 連携プラグイン。
 

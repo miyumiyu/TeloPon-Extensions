@@ -1,5 +1,5 @@
 """
-VciOscPlugin - VirtualCast VCI OSC テロップ送信プラグイン
+VciOscPlugin v1.00 - VirtualCast VCI OSC テロップ送信プラグイン
 
 AIが出力したテロップを OSC (OpenSound Control) 経由で
 VirtualCast の VCI に送信します。

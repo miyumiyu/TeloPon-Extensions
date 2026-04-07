@@ -1,3 +1,6 @@
+"""
+slack_integration v1.00 - Slack連携プラグイン
+"""
 import os
 import threading
 import time

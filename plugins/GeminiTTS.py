@@ -1,5 +1,5 @@
 """
-GeminiTTS - テロップ読み上げプラグイン
+GeminiTTS v1.00 - テロップ読み上げプラグイン
 
 AIが出力したテロップの MAIN テキストを Gemini TTS API で音声に変換し再生します。
 TeloPon と同じ API キーを使用します。

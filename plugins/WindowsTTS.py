@@ -1,5 +1,5 @@
 """
-WindowsTTS.py - Windows標準読み上げプラグイン for TeloPon
+WindowsTTS v1.00 - Windows標準読み上げプラグイン for TeloPon
 =========================================================
 pyttsx3 (SAPI5) を使ってテロップのMAINテキストを読み上げる。
 pyaudio で再生デバイスを選択可能。
