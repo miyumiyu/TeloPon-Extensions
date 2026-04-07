@@ -705,7 +705,21 @@ class YoutubeLiveOAuth(BasePlugin):
             self.panel.after(0, lambda: self._show_auth_url(auth_url))
 
         # ブラウザを開いてローカルサーバーで待機
-        self._credentials = flow.run_local_server(port=8099, open_browser=True)
+        # SO_REUSEADDR でポート再利用可能にする（キャンセル後の再認証でポート競合を防止）
+        import wsgiref.simple_server
+        original_init = wsgiref.simple_server.WSGIServer.__init__
+
+        def _patched_init(self_server, *args, **kwargs):
+            import socket
+            self_server.allow_reuse_address = True
+            original_init(self_server, *args, **kwargs)
+            self_server.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+        wsgiref.simple_server.WSGIServer.__init__ = _patched_init
+        try:
+            self._credentials = flow.run_local_server(port=8099, open_browser=True)
+        finally:
+            wsgiref.simple_server.WSGIServer.__init__ = original_init
 
         if getattr(self, '_auth_cancelled', False):
             self._credentials = None
