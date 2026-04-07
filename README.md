@@ -22,14 +22,15 @@ TeloPon の拡張パックです。プラグイン・プロンプト・テーマ
 
 ## プラグイン一覧
 
-| プラグイン | 説明 | 必要ライブラリ | 詳細 |
-|---|---|---|---|
-| WindowsTTS | Windows標準音声で読み上げ | pyttsx3 | [詳細](docs/ja/WindowsTTS.md) |
-| TelopTTS | Gemini TTSで読み上げ | - | [詳細](docs/ja/TelopTTS.md) |
-| VciOscPlugin | VirtualCast VCI へOSC送信 | python-osc | [詳細](docs/ja/VciOscPlugin.md) |
-| discord_integration | Discordチャンネル連携 | discord.py | [詳細](docs/ja/discord_integration.md) |
-| slack_integration | Slackチャンネル連携 | slack_sdk | [詳細](docs/ja/slack_integration.md) |
-| voicevox_plugin | VOICEVOX音声合成 | - | [詳細](docs/ja/voicevox_plugin.md) |
+| プラグイン | 説明 | 詳細 |
+|---|---|---|
+| YoutubeLiveOAuth | YouTube OAuth連携（コメント読み書き・アンケート・タイトル変更） | [詳細](docs/ja/YoutubeLiveOAuth.md) |
+| WindowsTTS | Windows標準音声で読み上げ | [詳細](docs/ja/WindowsTTS.md) |
+| TelopTTS | Gemini TTSで読み上げ | [詳細](docs/ja/TelopTTS.md) |
+| VciOscPlugin | VirtualCast VCI へOSC送信 | [詳細](docs/ja/VciOscPlugin.md) |
+| discord_integration | Discordチャンネル連携 | [詳細](docs/ja/discord_integration.md) |
+| slack_integration | Slackチャンネル連携 | [詳細](docs/ja/slack_integration.md) |
+| voicevox_plugin | VOICEVOX音声合成 | [詳細](docs/ja/voicevox_plugin.md) |
 
 ## プロンプト一覧
 
