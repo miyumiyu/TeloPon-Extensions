@@ -198,15 +198,15 @@ class VciOscPlugin(BasePlugin):
         text = " | ".join(parts)
 
         try:
-            # メインテキスト送信
-            self._client.send_message(self._live_address, text)
+            # メインテキスト送信（VCI側のUTF-8認識問題を回避するためbytesで送信）
+            self._client.send_message(self._live_address, text.encode("utf-8"))
 
             # バッジを別アドレスで送信（オプション）
             if self._live_send_badge and clean_badge:
-                self._client.send_message(self._live_address + "/badge", clean_badge)
+                self._client.send_message(self._live_address + "/badge", clean_badge.encode("utf-8"))
 
             # ウィンドウ種類を別アドレスで送信
-            self._client.send_message(self._live_address + "/window", window)
+            self._client.send_message(self._live_address + "/window", window.encode("utf-8"))
 
             logger.debug(f"[{self.PLUGIN_NAME}] OSC送信: {text[:50]}")
         except Exception as e:
@@ -304,7 +304,7 @@ class VciOscPlugin(BasePlugin):
             port = int(self._ent_port.get().strip())
             addr = self._ent_addr.get().strip()
             client = SimpleUDPClient(ip, port)
-            client.send_message(addr, "TeloPon OSC Test Message / テスト送信")
+            client.send_message(addr, "TeloPon OSC Test Message / テスト送信".encode("utf-8"))
             self._lbl_test.config(text=_t("test_ok"), foreground="green")
             logger.info(f"[{self.PLUGIN_NAME}] テスト送信成功: {ip}:{port} {addr}")
         except Exception as e:
