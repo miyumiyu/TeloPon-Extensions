@@ -643,9 +643,10 @@ class XTwitterPlugin(BasePlugin):
         self._ent_obs_password.insert(0, settings.get("obs_password", ""))
 
         ttk.Label(obs_left, text=_t("lbl_obs_source"), font=("", 8)).pack(anchor="w", pady=(2, 0))
-        self._ent_obs_source = ttk.Entry(obs_left, font=("", 9))
-        self._ent_obs_source.pack(fill=tk.X, pady=(0, 4))
-        self._ent_obs_source.insert(0, settings.get("obs_source", ""))
+        self._combo_obs_source = ttk.Combobox(obs_left, font=("", 9), state="readonly")
+        self._combo_obs_source.pack(fill=tk.X, pady=(0, 4))
+        self._combo_obs_source.set(settings.get("obs_source", ""))
+        self._combo_obs_source.bind("<Button-1>", lambda e: self._fetch_obs_scenes())
 
         obs_btn_f = ttk.Frame(obs_left)
         obs_btn_f.pack(fill=tk.X)
@@ -672,6 +673,28 @@ class XTwitterPlugin(BasePlugin):
         ).pack(fill=tk.X, pady=(8, 0))
         self._panel.protocol("WM_DELETE_WINDOW", self._save_and_close)
 
+    def _fetch_obs_scenes(self):
+        """OBSからシーン一覧を取得してコンボボックスに設定"""
+        def _do():
+            try:
+                import obsws_python as obs_ws
+                host = self._ent_obs_host.get().strip()
+                port = int(self._ent_obs_port.get().strip() or 4455)
+                password = self._ent_obs_password.get().strip()
+                cl = obs_ws.ReqClient(host=host, port=port, password=password, timeout=3)
+                scenes = cl.get_scene_list()
+                scene_names = []
+                if scenes and hasattr(scenes, 'scenes'):
+                    for scene in scenes.scenes:
+                        name = scene.get("sceneName", "") if isinstance(scene, dict) else getattr(scene, "sceneName", "")
+                        if name:
+                            scene_names.append(name)
+                if scene_names and self._panel and self._panel.winfo_exists():
+                    self._panel.after(0, lambda names=scene_names: self._combo_obs_source.config(values=names))
+            except Exception:
+                pass
+        threading.Thread(target=_do, daemon=True).start()
+
     def _on_obs_test(self):
         """OBSキャプチャのテスト — プレビュー画像を表示"""
         self._lbl_obs_status.config(text="...", foreground="orange")
@@ -686,7 +709,7 @@ class XTwitterPlugin(BasePlugin):
                 host = self._ent_obs_host.get().strip()
                 port = int(self._ent_obs_port.get().strip() or 4455)
                 password = self._ent_obs_password.get().strip()
-                source = self._ent_obs_source.get().strip()
+                source = self._combo_obs_source.get().strip()
                 if not source:
                     if self._panel and self._panel.winfo_exists():
                         self._panel.after(0, lambda: self._lbl_obs_status.config(
@@ -766,6 +789,6 @@ class XTwitterPlugin(BasePlugin):
         settings["obs_host"] = self._ent_obs_host.get().strip()
         settings["obs_port"] = int(self._ent_obs_port.get().strip() or 4455)
         settings["obs_password"] = self._ent_obs_password.get().strip()
-        settings["obs_source"] = self._ent_obs_source.get().strip()
+        settings["obs_source"] = self._combo_obs_source.get().strip()
         self.save_settings(settings)
         self._panel.destroy()
