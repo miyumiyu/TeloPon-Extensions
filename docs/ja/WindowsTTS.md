@@ -1,4 +1,4 @@
-# 🔊 Windows 読み上げプラグイン (WindowsTTS.py)
+# 🔊 テロップ読み上げ - Windows (WindowsTTS.py)
 
 📥 **[WindowsTTS.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py)**
 

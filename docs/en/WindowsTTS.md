@@ -1,4 +1,4 @@
-# Windows Text-to-Speech Plugin (WindowsTTS.py)
+# 🔊 Telop TTS - Windows (WindowsTTS.py)
 
 **[Download WindowsTTS.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py)**
 

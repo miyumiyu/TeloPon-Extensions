@@ -1,4 +1,4 @@
-# 📺 Плагин Niconico Live (NiconicoLivePlugin.py)
+# 📺 Niconico Live (NiconicoLivePlugin.py)
 
 📥 **[Скачать NiconicoLivePlugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py)**
 

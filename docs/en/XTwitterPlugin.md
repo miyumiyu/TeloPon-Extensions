@@ -1,4 +1,4 @@
-# 🐦 X (Twitter) Integration Plugin (XTwitterPlugin.py)
+# 🐦 X (Twitter) (XTwitterPlugin.py)
 
 📥 **[Download XTwitterPlugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py)**
 

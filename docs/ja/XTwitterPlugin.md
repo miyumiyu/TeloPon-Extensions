@@ -1,4 +1,4 @@
-# 🐦 X (Twitter) 連携プラグイン (XTwitterPlugin.py)
+# 🐦 X (Twitter) (XTwitterPlugin.py)
 
 📥 **[XTwitterPlugin.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py)**
 

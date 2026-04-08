@@ -1,4 +1,4 @@
-# 🎮 VCI OSC テロップ (VciOscPlugin.py)
+# 🎮 VCI テロップ送信 (VciOscPlugin.py)
 
 📥 **[VciOscPlugin.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py)**
 

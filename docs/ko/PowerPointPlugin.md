@@ -1,4 +1,4 @@
-# 📊 PowerPoint 조작 플러그인 (PowerPointPlugin.py)
+# 📊 PowerPoint 조작 (PowerPointPlugin.py)
 
 📥 **[PowerPointPlugin.py 다운로드](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py)**
 

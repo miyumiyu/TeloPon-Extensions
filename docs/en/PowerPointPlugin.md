@@ -1,4 +1,4 @@
-# 📊 PowerPoint Control Plugin (PowerPointPlugin.py)
+# 📊 PowerPoint Control (PowerPointPlugin.py)
 
 📥 **[Download PowerPointPlugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py)**
 

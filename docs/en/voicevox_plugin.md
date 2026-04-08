@@ -1,4 +1,4 @@
-# VOICEVOX Text-to-Speech (voicevox_plugin.py)
+# 🔊 Telop TTS - VOICEVOX (voicevox_plugin.py)
 
 **[Download voicevox_plugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py)**
 

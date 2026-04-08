@@ -1,4 +1,4 @@
-# 🔊 Плагин озвучивания Windows (WindowsTTS.py)
+# 🔊 Озвучка телопов - Windows (WindowsTTS.py)
 
 📥 **[Скачать WindowsTTS.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py)**
 

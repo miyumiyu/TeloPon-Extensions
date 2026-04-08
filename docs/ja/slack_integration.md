@@ -1,4 +1,4 @@
-# 🏢 Slackコメント連携 (slack_integration.py)
+# 💬 Slack (slack_integration.py)
 
 このプラグインを使用すると、会社のSlackワークスペースや、チームのチャンネルに投稿されたコメントを、TeloPonのAIが遅延ゼロで読み上げてくれます！
 最新の「Socket Mode」という技術を使っているため、驚くほどリアルタイムに反応します。

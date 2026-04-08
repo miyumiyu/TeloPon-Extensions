@@ -1,4 +1,4 @@
-# 📺 ニコニコ生放送連携プラグイン (NiconicoLivePlugin.py)
+# 📺 ニコニコ生放送 (NiconicoLivePlugin.py)
 
 📥 **[NiconicoLivePlugin.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py)**
 

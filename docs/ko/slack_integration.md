@@ -1,4 +1,4 @@
-# 🏢 Slack 댓글 연동 (slack_integration.py)
+# 💬 Slack (slack_integration.py)
 
 이 플러그인을 사용하면, 회사의 Slack 워크스페이스나 팀 채널에 게시된 댓글을 TeloPon의 AI가 지연 없이 읽어줍니다!
 최신 「Socket Mode」 기술을 사용하기 때문에, 놀라울 정도로 실시간으로 반응합니다.

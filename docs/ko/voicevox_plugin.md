@@ -1,4 +1,4 @@
-# 🔊 VOICEVOX 읽기 (voicevox_plugin.py)
+# 🔊 텔롭 읽기 - VOICEVOX (voicevox_plugin.py)
 
 📥 **[voicevox_plugin.py 다운로드](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py)**
 

@@ -1,4 +1,4 @@
-# 🎮 VCI OSC 자막 (VciOscPlugin.py)
+# 🎮 VCI 텔롭 전송 (VciOscPlugin.py)
 
 📥 **[VciOscPlugin.py 다운로드](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py)**
 

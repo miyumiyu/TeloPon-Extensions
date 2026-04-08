@@ -1,4 +1,4 @@
-# 💬 Discord 실시간 연동 (discord_integration.py)
+# 💬 Discord (discord_integration.py)
 
 이 플러그인을 사용하면, Discord 서버의 지정한 채널의 댓글을 TeloPon의 AI가 실시간으로 읽고 반응해 줍니다!
 

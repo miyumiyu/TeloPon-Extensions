@@ -1,4 +1,4 @@
-# Discord Real-Time Integration (discord_integration.py)
+# 💬 Discord (discord_integration.py)
 
 This plugin allows TeloPon's AI to read and react to comments in real time from a specified channel in your Discord server!
 

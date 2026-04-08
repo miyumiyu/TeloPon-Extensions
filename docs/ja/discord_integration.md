@@ -1,4 +1,4 @@
-# 💬 Discordリアルタイム連携 (discord_integration.py)
+# 💬 Discord (discord_integration.py)
 
 このプラグインを使用すると、Discordサーバーの指定したチャンネルのコメントを、TeloPonのAIがリアルタイムに読み上げてリアクションしてくれるようになります！
 

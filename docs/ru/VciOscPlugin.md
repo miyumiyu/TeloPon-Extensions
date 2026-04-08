@@ -1,4 +1,4 @@
-# 🎮 VCI OSC баннеры (VciOscPlugin.py)
+# 🎮 VCI телоп (VciOscPlugin.py)
 
 📥 **[Скачать VciOscPlugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py)**
 

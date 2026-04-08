@@ -1,4 +1,4 @@
-# 🔊 Windows 음성 읽기 플러그인 (WindowsTTS.py)
+# 🔊 텔롭 읽기 - Windows (WindowsTTS.py)
 
 📥 **[WindowsTTS.py 다운로드](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py)**
 

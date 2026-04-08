@@ -1,4 +1,4 @@
-# 📊 Плагин управления PowerPoint (PowerPointPlugin.py)
+# 📊 Управление PowerPoint (PowerPointPlugin.py)
 
 📥 **[Скачать PowerPointPlugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py)**
 

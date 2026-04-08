@@ -1,4 +1,4 @@
-# 📺 니코니코 생방송 연동 플러그인 (NiconicoLivePlugin.py)
+# 📺 니코니코 생방송 (NiconicoLivePlugin.py)
 
 📥 **[NiconicoLivePlugin.py 다운로드](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py)**
 

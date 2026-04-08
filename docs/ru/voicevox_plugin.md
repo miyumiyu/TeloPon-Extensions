@@ -1,4 +1,4 @@
-# 🔊 Озвучивание VOICEVOX (voicevox_plugin.py)
+# 🔊 Озвучка телопов - VOICEVOX (voicevox_plugin.py)
 
 📥 **[Скачать voicevox_plugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py)**
 

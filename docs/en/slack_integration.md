@@ -1,4 +1,4 @@
-# Slack Comment Integration (slack_integration.py)
+# 💬 Slack (slack_integration.py)
 
 This plugin allows TeloPon's AI to read comments posted to your company's Slack workspace or team channels with zero delay!
 It uses the latest "Socket Mode" technology, so the response is remarkably real-time.

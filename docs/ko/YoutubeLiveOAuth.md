@@ -1,4 +1,4 @@
-# ▶️ YouTube OAuth 연동 도구 (YoutubeLiveOAuth.py)
+# 📺 YouTube Live+ (YoutubeLiveOAuth.py)
 
 📥 **[YoutubeLiveOAuth.py 다운로드](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py)**
 

@@ -1,4 +1,4 @@
-# 🔊 VOICEVOX読み上げ (voicevox_plugin.py)
+# 🔊 テロップ読み上げ - VOICEVOX (voicevox_plugin.py)
 
 📥 **[voicevox_plugin.py をダウンロード](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py)**
 

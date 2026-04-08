@@ -1,4 +1,4 @@
-# ▶️ Инструмент интеграции YouTube OAuth (YoutubeLiveOAuth.py)
+# 📺 YouTube Live+ (YoutubeLiveOAuth.py)
 
 📥 **[Скачать YoutubeLiveOAuth.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py)**
 

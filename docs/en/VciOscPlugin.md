@@ -1,4 +1,4 @@
-# VCI OSC Telop (VciOscPlugin.py)
+# 🎮 VCI Telop Sender (VciOscPlugin.py)
 
 **[Download VciOscPlugin.py](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py)**
 
