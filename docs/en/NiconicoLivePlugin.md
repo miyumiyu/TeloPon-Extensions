@@ -32,26 +32,13 @@ Comment reading works without login. With login, you can also create polls and p
 
 ## ⚙️ Requirements
 
-- Windows / macOS / Linux
-- The following libraries must be installed (NOT included in TeloPon exe):
-
-```
-pip install aiohttp websockets protobuf
-```
-
-> **Note:** You must also copy the `_niconico` folder into the `plugins/` folder.
+- Windows PC
 
 ---
 
 ## 📋 Setup
 
-### 1. File Placement
-
-Copy these two items into TeloPon's `plugins/` folder:
-- `NiconicoLivePlugin.py`
-- `_niconico/` folder (entire folder)
-
-### 2. Open Settings
+### 1. Open Settings
 
 Click the **"⚙️ Settings"** button next to **"Niconico Live Plugin"** in the Extensions panel on the right side of TeloPon's main screen.
 
@@ -137,9 +124,6 @@ Stream title and description are added to the prompt on connection, so the AI un
 - **Connect/disconnect during live:** This plugin is a TOOL type, so you can connect/disconnect in real-time during a stream.
 - **Control features for own broadcasts only:** Even when logged in, poll creation and operator comments are disabled for other people's broadcasts (auto-grayed out).
 - **Two-factor authentication supported:** Compatible with Niconico's 2FA.
-- **Additional libraries required:** You must install `aiohttp`, `websockets`, and `protobuf` separately.
-- **`_niconico` folder required:** Copy both the plugin file and the `_niconico/` folder.
-
 ---
 
 [⬅️ Back to Extension Plugin List](../../README_en.md)

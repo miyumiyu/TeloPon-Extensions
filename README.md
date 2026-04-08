@@ -33,7 +33,6 @@ TeloPon の拡張パックです。プラグイン・プロンプト・テーマ
 | 🏢 | [Slack連携](docs/ja/slack_integration.md) | 1.00 | [Slack](https://slack.com/) ワークスペースの指定チャンネルのコメントを Socket Mode で遅延ゼロ取得。<br>ユーザーID→名前の自動変換付き。<br>👉 [詳細はこちら](docs/ja/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🗣️ | [VOICEVOX 読み上げ](docs/ja/voicevox_plugin.md) | 1.00 | [VOICEVOX](https://voicevox.hiroshiba.jp/) の音声合成エンジンでテロップを読み上げ。<br>多数のキャラクターボイスとスタイルに対応。<br>👉 [詳細はこちら](docs/ja/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
 | 📊 | [PowerPoint操作](docs/ja/PowerPointPlugin.md) | 1.00 | 音声指示でPowerPointスライドショーを操作。<br>スライド送り/戻し、ページジャンプ、ブラックアウト、プレゼン開始/終了。<br>スライド切替時にタイトル・ノートをAIに自動注入。<br>👉 [詳細はこちら](docs/ja/PowerPointPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py) |
-| 📺 | [ニコニコ生放送連携](docs/ja/NiconicoLivePlugin.md) | 1.00 | ニコニコ生放送のコメント・ギフト・ニコニ広告・アンケート・統計をリアルタイム取得。<br>ログインでアンケート作成・運営コメント投稿にも対応。<br>👉 [詳細はこちら](docs/ja/NiconicoLivePlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py) |
 
 ---
 
