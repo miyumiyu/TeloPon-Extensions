@@ -128,6 +128,7 @@ def _strip_tags(text):
 class VciOscPlugin(BasePlugin):
     PLUGIN_ID   = "vci_osc"
     PLUGIN_NAME = "VCI OSC Telop"
+    PLUGIN_VERSION = "1.01"
     PLUGIN_TYPE = "TOOL"
 
     def __init__(self):

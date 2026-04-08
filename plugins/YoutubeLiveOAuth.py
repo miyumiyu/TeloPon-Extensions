@@ -558,6 +558,7 @@ _TOKEN_PATH = os.path.join("plugins", "youtube_oauth_token.json")
 class YoutubeLiveOAuth(BasePlugin):
     PLUGIN_ID = "youtube_live_oauth"
     PLUGIN_NAME = "YouTube OAuth連携"
+    PLUGIN_VERSION = "1.00"
     PLUGIN_TYPE = "TOOL"
 
     # CMD ハイブリッド: [CMD]YT:xxx

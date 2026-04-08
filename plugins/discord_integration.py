@@ -163,6 +163,7 @@ def _t(key, **kwargs):
 class DiscordRealtimePlugin(BasePlugin):
     PLUGIN_ID = "discord_realtime"
     PLUGIN_NAME = "Discordリアルタイム連携"
+    PLUGIN_VERSION = "1.00"
     PLUGIN_TYPE = "TOOL"
 
     def get_display_name(self):

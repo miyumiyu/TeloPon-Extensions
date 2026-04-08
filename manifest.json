@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "plugins": [
+    {
+      "plugin_id": "youtube_live_oauth",
+      "name": "YouTube OAuth連携",
+      "name_en": "YouTube OAuth",
+      "name_ko": "YouTube OAuth 연동",
+      "name_ru": "YouTube OAuth",
+      "version": "1.00",
+      "description": "YouTube Data API + OAuth2 による高機能連携。コメント読み書き・アンケート・タイトル変更・視聴者数取得。",
+      "description_en": "Advanced YouTube integration with OAuth2. Comment read/write, polls, title change, viewer count.",
+      "type": "TOOL",
+      "files": ["YoutubeLiveOAuth.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py",
+      "bundled_deps": true
+    },
+    {
+      "plugin_id": "windows_tts",
+      "name": "Windows 読み上げ",
+      "name_en": "Windows TTS",
+      "name_ko": "Windows TTS",
+      "name_ru": "Windows TTS",
+      "version": "1.00",
+      "description": "Windows標準の音声合成エンジン（SAPI5）でテロップを自動読み上げ。",
+      "description_en": "Auto text-to-speech using Windows built-in SAPI5 engine.",
+      "type": "TOOL",
+      "files": ["WindowsTTS.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py",
+      "bundled_deps": true
+    },
+    {
+      "plugin_id": "vci_osc",
+      "name": "VCI OSC テロップ",
+      "name_en": "VCI OSC Telop",
+      "name_ko": "VCI OSC 텔롭",
+      "name_ru": "VCI OSC",
+      "version": "1.01",
+      "description": "VirtualCast の VCI に OSC でテロップを送信。VR空間にAIテロップを表示。",
+      "description_en": "Send telops to VirtualCast VCI via OSC. Display AI telops in VR space.",
+      "type": "TOOL",
+      "files": ["VciOscPlugin.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py",
+      "bundled_deps": true
+    },
+    {
+      "plugin_id": "discord_realtime",
+      "name": "Discord連携",
+      "name_en": "Discord Integration",
+      "name_ko": "Discord 연동",
+      "name_ru": "Discord",
+      "version": "1.00",
+      "description": "Discordサーバーの指定チャンネルのコメントをリアルタイムに取得してAIに注入。",
+      "description_en": "Real-time comment fetching from Discord server channels.",
+      "type": "TOOL",
+      "files": ["discord_integration.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py",
+      "bundled_deps": true
+    },
+    {
+      "plugin_id": "slack_integration",
+      "name": "Slack連携",
+      "name_en": "Slack Integration",
+      "name_ko": "Slack 연동",
+      "name_ru": "Slack",
+      "version": "1.00",
+      "description": "Slackワークスペースの指定チャンネルのコメントをSocket Modeでリアルタイム取得。",
+      "description_en": "Real-time comment fetching from Slack channels via Socket Mode.",
+      "type": "TOOL",
+      "files": ["slack_integration.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py",
+      "bundled_deps": true
+    },
+    {
+      "plugin_id": "voicevox",
+      "name": "VOICEVOX 読み上げ",
+      "name_en": "VOICEVOX TTS",
+      "name_ko": "VOICEVOX 읽기",
+      "name_ru": "VOICEVOX",
+      "version": "1.00",
+      "description": "VOICEVOXの音声合成エンジンでテロップを読み上げ。多数のキャラクターボイスに対応。",
+      "description_en": "Text-to-speech using VOICEVOX engine. Multiple character voices supported.",
+      "type": "TOOL",
+      "files": ["voicevox_plugin.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py",
+      "bundled_deps": true
+    },
+    {
+      "plugin_id": "powerpoint_ctrl",
+      "name": "PowerPoint操作",
+      "name_en": "PowerPoint Control",
+      "name_ko": "PowerPoint 조작",
+      "name_ru": "PowerPoint",
+      "version": "1.00",
+      "description": "音声指示でPowerPointスライドショーを操作。スライド切替時にノートをAIに自動注入。",
+      "description_en": "Control PowerPoint slideshow by voice. Auto-inject slide notes to AI.",
+      "type": "TOOL",
+      "files": ["PowerPointPlugin.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py",
+      "bundled_deps": true
+    }
+  ]
+}

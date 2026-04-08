@@ -150,6 +150,7 @@ def _t(key, **kwargs):
 class SlackIntegrationPlugin(BasePlugin):
     PLUGIN_ID = "slack_integration"
     PLUGIN_NAME = "Slackコメント連携"
+    PLUGIN_VERSION = "1.00"
     PLUGIN_TYPE = "TOOL"
 
     def get_display_name(self):

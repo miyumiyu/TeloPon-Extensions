@@ -195,6 +195,7 @@ def _get_output_devices():
 class WindowsTTS(BasePlugin):
     PLUGIN_ID = "windows_tts"
     PLUGIN_NAME = "Windows TTS"
+    PLUGIN_VERSION = "1.00"
     PLUGIN_TYPE = "TOOL"
 
     def __init__(self):

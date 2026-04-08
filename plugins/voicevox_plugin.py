@@ -166,6 +166,7 @@ def _strip_markup(text: str) -> str:
 class VoicevoxPlugin(BasePlugin):
     PLUGIN_ID   = "voicevox"
     PLUGIN_NAME = "VOICEVOX読み上げ"
+    PLUGIN_VERSION = "1.00"
     PLUGIN_TYPE = "TOOL"
 
     def get_display_name(self):

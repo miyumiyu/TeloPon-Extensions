@@ -136,6 +136,7 @@ def _t(key, **kwargs):
 class PowerPointPlugin(BasePlugin):
     PLUGIN_ID = "powerpoint_ctrl"
     PLUGIN_NAME = "PowerPoint Control"
+    PLUGIN_VERSION = "1.00"
     PLUGIN_TYPE = "TOOL"
 
     # CMD ハイブリッド: [CMD]PPT:xxx
@@ -308,6 +309,10 @@ class PowerPointPlugin(BasePlugin):
             "* プレゼン終了: [CMD]PPT:end\n"
             "* 画面ブラックアウト: [CMD]PPT:black\n"
             "* 画面復帰: [CMD]PPT:resume\n"
+            "\n## 重要：スライド操作時はテロップを出さない\n"
+            "スライド操作の指示を受けたら、テロップ（[MAIN]）は「スキップ」にして、コマンドだけを実行してください。\n"
+            "「次のスライドに移動します」等の説明テロップは不要です。\n"
+            "例: [MAIN]スキップ[CMD]PPT:next[MEMO]スライド操作\n"
             "\n## 配信者の発言に対する反応ルール\n"
             "* 「次へ」「次のスライド」「次のページ」→ [CMD]PPT:next\n"
             "* 「前に」「前のスライド」「戻って」→ [CMD]PPT:prev\n"
