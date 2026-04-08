@@ -34,7 +34,7 @@ except ImportError:
 # ==========================================
 _L = {
     "ja": {
-        "plugin_name": "X (Twitter) 連携",
+        "plugin_name": "🐦 X (Twitter)",
         "window_title": "⚙️ X (Twitter) 連携 設定",
         "import_error": "tweepy がインストールされていません。\npip install tweepy を実行してください。",
         # 認証
@@ -61,6 +61,16 @@ _L = {
         "chk_viewer_ok": "視聴者可",
         "lbl_default_hashtag": "投稿時の自動付与ハッシュタグ:",
         "lbl_default_hashtag_hint": "例: #TeloPon #配信（空欄なら付与しない）",
+        "chk_attach_url": "配信URLを自動で付ける",
+        # OBS
+        "section_obs": " 📸 OBSキャプチャ（画像付きツイート用）",
+        "lbl_obs_host": "OBS WebSocket Host:",
+        "lbl_obs_port": "Port:",
+        "lbl_obs_password": "Password:",
+        "lbl_obs_source": "キャプチャソース名:",
+        "btn_obs_test": "📸 テストキャプチャ",
+        "obs_test_ok": "✅ キャプチャ成功",
+        "obs_test_fail": "❌ キャプチャ失敗: {err}",
         # ボタン
         "btn_close": "閉じる",
         # AI注入
@@ -72,13 +82,16 @@ _L = {
         "prompt_cmd_post": (
             "\n# 【X (Twitter) 投稿コマンド】\n"
             "配信者の指示でツイートを投稿できます。テロップの末尾（[MEMO]の直前）に記述してください。\n"
-            "* ツイート投稿: [CMD]X:post ツイート内容\n"
+            "* テキストのみ投稿: [CMD]X:post 100文字以内のツイート内容\n"
+            "* サムネイル画像付き投稿: [CMD]X:post_thumb 100文字以内のツイート内容\n"
+            "* ゲーム画面付き投稿: [CMD]X:post_screen 100文字以内のツイート内容\n"
             "\n## 配信者の発言に対する反応ルール\n"
-            "* 「ツイートして」「Xに投稿して」→ 内容を考えて [CMD]X:post 投稿内容\n"
-            "* 「○○ってツイートして」→ [CMD]X:post ○○\n"
+            "* 「ツイートして」「Xに投稿して」→ [CMD]X:post 内容\n"
+            "* 「サムネ付きでツイートして」「サムネイルを投稿して」→ [CMD]X:post_thumb 内容\n"
+            "* 「ゲーム画面付きでツイートして」「画面を投稿して」→ [CMD]X:post_screen 内容\n"
             "\n## 重要\n"
-            "* ツイートは140文字以内に収めてください\n"
-            "* ハッシュタグ「{default_tags}」は自動で付与されるため、本文に含めないでください\n"
+            "* ツイートは100文字以内に収めてください（URL・ハッシュタグが自動付与されるため）\n"
+            "* ハッシュタグ「{default_tags}」と配信URLは自動で付与されるため、本文に含めないでください\n"
             "* 投稿コマンド実行時はテロップ（[MAIN]）を「スキップ」にしてください\n"
             "  例: [MAIN]スキップ[CMD]X:post 配信中です！[MEMO]ツイート\n"
             "\n## 視聴者コメントからの実行権限\n"
@@ -93,7 +106,7 @@ _L = {
         "post_fail_cue": "【カンペ】ツイート投稿に失敗しました。",
     },
     "en": {
-        "plugin_name": "X (Twitter) Integration",
+        "plugin_name": "🐦 X (Twitter)",
         "window_title": "⚙️ X (Twitter) Settings",
         "import_error": "tweepy is not installed.\nPlease run: pip install tweepy",
         "section_auth": " 🔑 API Authentication ",
@@ -117,6 +130,15 @@ _L = {
         "chk_viewer_ok": "Viewer OK",
         "lbl_default_hashtag": "Auto-append hashtags:",
         "lbl_default_hashtag_hint": "e.g. #TeloPon #streaming (empty = none)",
+        "chk_attach_url": "Auto-attach stream URL",
+        "section_obs": " 📸 OBS Capture (for image tweets)",
+        "lbl_obs_host": "OBS WebSocket Host:",
+        "lbl_obs_port": "Port:",
+        "lbl_obs_password": "Password:",
+        "lbl_obs_source": "Capture source name:",
+        "btn_obs_test": "📸 Test Capture",
+        "obs_test_ok": "✅ Capture OK",
+        "obs_test_fail": "❌ Capture failed: {err}",
         "btn_close": "Close",
         "prompt_addon": (
             "# [X (Twitter) Info]\n"
@@ -125,12 +147,9 @@ _L = {
         ),
         "prompt_cmd_post": (
             "\n# [X (Twitter) Post Commands]\n"
-            "You can post tweets on the streamer's instruction.\n"
-            "* Post tweet: [CMD]X:post tweet content\n"
-            "\n## Important\n"
-            "* Keep tweets under 280 characters\n"
-            "* Hashtags \"{default_tags}\" are auto-appended\n"
-            "* Use [MAIN]スキップ when posting\n"
+            "* Text only: [CMD]X:post content (under 100 chars)\n"
+            "* With thumbnail: [CMD]X:post_thumb content\n"
+            "* With screen capture: [CMD]X:post_screen content\n"
         ),
         "tweet_cue": (
             "[Cue from Director]\n"
@@ -180,7 +199,7 @@ class XTwitterPlugin(BasePlugin):
         self._live_queue = None
         self._live_prompt_config = None
 
-        self._client = None  # tweepy.Client
+        self._api = None  # tweepy.API (v1.1)
         self._auth_user = None  # screen_name
         self.is_connected = False
 
@@ -206,13 +225,18 @@ class XTwitterPlugin(BasePlugin):
             "ai_post": True,
             "viewer_post": False,
             "default_hashtags": "",
+            "attach_stream_url": True,
+            "obs_host": "127.0.0.1",
+            "obs_port": 4455,
+            "obs_password": "",
+            "obs_source": "",
         }
 
     # ========================================
     # 認証
     # ========================================
     def _build_client(self):
-        """tweepy Client を構築"""
+        """tweepy API (v1.1) を構築。スタンドアロンアプリ（Project不要）で動作。"""
         if not _HAS_TWEEPY:
             return False
         settings = self.get_settings()
@@ -223,26 +247,24 @@ class XTwitterPlugin(BasePlugin):
         if not all([api_key, api_secret, access_token, access_secret]):
             return False
         try:
-            self._client = tweepy.Client(
-                consumer_key=api_key,
-                consumer_secret=api_secret,
-                access_token=access_token,
-                access_token_secret=access_secret,
-                wait_on_rate_limit=True,
-            )
+            auth = tweepy.OAuth1UserHandler(api_key, api_secret, access_token, access_secret)
+            self._api = tweepy.API(auth, wait_on_rate_limit=True)
             # 認証テスト
-            me = self._client.get_me()
-            if me and me.data:
-                self._auth_user = me.data.username
+            me = self._api.verify_credentials()
+            if me:
+                self._auth_user = me.screen_name
                 self.is_connected = True
+                # 認証成功時に enabled も True にする
+                settings["enabled"] = True
+                self.save_settings(settings)
                 logger.info(f"{_TAG} 認証成功: @{self._auth_user}")
                 return True
             else:
-                self._client = None
+                self._api = None
                 return False
         except Exception as e:
             logger.warning(f"{_TAG} 認証失敗: {e}")
-            self._client = None
+            self._api = None
             return False
 
     # ========================================
@@ -265,7 +287,7 @@ class XTwitterPlugin(BasePlugin):
         self._live_queue = plugin_queue
         self._live_prompt_config = prompt_config
 
-        if not self.is_connected or not self._client:
+        if not self.is_connected or not self._api:
             return
 
         self.cmt_msg = prompt_config.get("CMT_MSG", "")
@@ -289,6 +311,7 @@ class XTwitterPlugin(BasePlugin):
     # ハッシュタグ検索ループ
     # ========================================
     def _search_loop(self):
+        """v1.1 API でハッシュタグ検索（スタンドアロンアプリ対応）"""
         settings = self.get_settings()
         hashtag = settings.get("hashtag", "").strip().lstrip("#")
         interval = max(30, settings.get("poll_interval", 60))
@@ -296,35 +319,28 @@ class XTwitterPlugin(BasePlugin):
         if not hashtag:
             return
 
-        query = f"#{hashtag} -is:retweet"
+        query = f"#{hashtag} -filter:retweets"
         logger.info(f"{_TAG} ハッシュタグ検索開始: {query} (間隔: {interval}秒)")
 
-        while self.is_running and self._client:
+        while self.is_running and self._api:
             try:
                 kwargs = {
-                    "query": query,
-                    "max_results": 10,
-                    "tweet_fields": ["author_id", "created_at"],
-                    "expansions": ["author_id"],
-                    "user_fields": ["username", "name", "profile_image_url"],
+                    "q": query,
+                    "count": 10,
+                    "result_type": "recent",
+                    "tweet_mode": "extended",
                 }
                 if self._last_tweet_id:
-                    kwargs["since_id"] = self._last_tweet_id
+                    kwargs["since_id"] = int(self._last_tweet_id)
 
-                resp = self._client.search_recent_tweets(**kwargs)
+                results = self._api.search_tweets(**kwargs)
 
-                if resp and resp.data:
-                    # ユーザー名マップ作成
-                    user_map = {}
-                    if resp.includes and "users" in resp.includes:
-                        for u in resp.includes["users"]:
-                            user_map[u.id] = u
-
+                if results:
                     tweets_text = []
-                    for tweet in reversed(resp.data):  # 古い順
-                        user = user_map.get(tweet.author_id)
-                        name = f"@{user.username}" if user else "unknown"
-                        tweets_text.append(f"  {name}: {tweet.text[:100]}")
+                    for tweet in reversed(results):  # 古い順
+                        name = f"@{tweet.user.screen_name}"
+                        text = getattr(tweet, "full_text", tweet.text)[:100]
+                        tweets_text.append(f"  {name}: {text}")
                         self._last_tweet_id = str(tweet.id)
 
                     if tweets_text and self.plugin_queue:
@@ -345,43 +361,151 @@ class XTwitterPlugin(BasePlugin):
         return True
 
     def handle(self, value: str):
-        if not value or not self._client:
+        logger.info(f"{_TAG} [CMD]X: 受信 → '{value}'")
+        if not value:
+            logger.warning(f"{_TAG} [CMD]X: value が空のためスキップ")
+            return
+        if not self._api:
+            logger.warning(f"{_TAG} [CMD]X: API未認証のためスキップ")
             return
 
         # 後続タグを除去
         value = re.sub(r'\[(?:WND|LAY|BDG|MEMO|TOPIC|MAIN)\].*$', '', value, flags=re.IGNORECASE).strip()
         if not value:
+            logger.warning(f"{_TAG} [CMD]X: タグ除去後に空のためスキップ")
             return
 
         v_lower = value.lower()
-        if v_lower.startswith("post"):
+        if v_lower.startswith("post_thumb"):
+            text = value[10:].strip()
+            if text:
+                logger.info(f"{_TAG} [CMD]X:post_thumb → '{text[:50]}'")
+                self._post_tweet(text, image_mode="thumbnail")
+            else:
+                logger.warning(f"{_TAG} [CMD]X:post_thumb テキストが空")
+        elif v_lower.startswith("post_screen"):
+            text = value[11:].strip()
+            if text:
+                logger.info(f"{_TAG} [CMD]X:post_screen → '{text[:50]}'")
+                self._post_tweet(text, image_mode="screen")
+            else:
+                logger.warning(f"{_TAG} [CMD]X:post_screen テキストが空")
+        elif v_lower.startswith("post"):
             text = value[4:].strip()
             if text:
+                logger.info(f"{_TAG} [CMD]X:post → '{text[:50]}'")
                 self._post_tweet(text)
+            else:
+                logger.warning(f"{_TAG} [CMD]X:post テキストが空")
+        else:
+            logger.warning(f"{_TAG} [CMD]X: 未知のサブコマンド '{value[:30]}'")
 
-    def _post_tweet(self, text: str):
-        """ツイートを投稿"""
-        if not self._client:
+    def _post_tweet(self, text: str, image_mode: str = "none"):
+        """ツイートを投稿
+        image_mode: "none" / "thumbnail" / "screen"
+        """
+        if not self._api:
             return
 
         settings = self.get_settings()
+
+        # ハッシュタグ付与
         default_tags = settings.get("default_hashtags", "").strip()
         if default_tags:
             text = f"{text} {default_tags}"
+
+        # 配信URL付与
+        if settings.get("attach_stream_url", True):
+            stream_url = self.get_stream_url()
+            if stream_url:
+                text = f"{text}\n{stream_url}"
 
         # 280文字制限
         if len(text) > 280:
             text = text[:277] + "..."
 
         try:
-            self._client.create_tweet(text=text)
-            logger.info(f"{_TAG} ツイート投稿: {text[:50]}")
+            media_id = None
+
+            # 画像添付
+            if image_mode == "thumbnail":
+                media_id = self._upload_thumbnail()
+            elif image_mode == "screen":
+                media_id = self._upload_obs_screenshot()
+
+            # v2 Client で投稿
+            client_v2 = tweepy.Client(
+                consumer_key=settings.get("api_key", ""),
+                consumer_secret=settings.get("api_secret", ""),
+                access_token=settings.get("access_token", ""),
+                access_token_secret=settings.get("access_secret", ""),
+            )
+            kwargs = {"text": text}
+            if media_id:
+                kwargs["media_ids"] = [media_id]
+            client_v2.create_tweet(**kwargs)
+            logger.info(f"{_TAG} ツイート投稿: {text[:50]} (image={image_mode})")
             if self.plugin_queue:
                 self.send_text(self.plugin_queue, _t("post_ok_cue", text=text[:50]))
         except Exception as e:
             logger.warning(f"{_TAG} ツイート投稿エラー: {e}")
             if self.plugin_queue:
                 self.send_text(self.plugin_queue, _t("post_fail_cue"))
+
+    def _upload_thumbnail(self) -> str | None:
+        """コア共有機構からサムネイル画像を取得してアップロード（v1.1 media_upload）"""
+        thumb_bytes, mime = self.get_stream_thumbnail()
+        if not thumb_bytes:
+            logger.warning(f"{_TAG} サムネイル画像がありません")
+            return None
+        return self._upload_image_bytes(thumb_bytes, mime)
+
+    def _upload_obs_screenshot(self) -> str | None:
+        """OBS WebSocket でスクリーンショットを取得してアップロード"""
+        try:
+            import base64
+            import obsws_python as obs
+
+            settings = self.get_settings()
+            host = settings.get("obs_host", "127.0.0.1")
+            port = int(settings.get("obs_port", 4455))
+            password = settings.get("obs_password", "")
+            source = settings.get("obs_source", "")
+            if not source:
+                logger.warning(f"{_TAG} OBSキャプチャソース名が未設定")
+                return None
+
+            cl = obs.ReqClient(host=host, port=port, password=password, timeout=3)
+            res = cl.get_source_screenshot(source, "jpeg", 1280, 720, 80)
+            img_data = res.image_data
+            if img_data.startswith("data:image/jpeg;base64,"):
+                img_data = img_data.replace("data:image/jpeg;base64,", "")
+            img_bytes = base64.b64decode(img_data)
+            logger.info(f"{_TAG} OBSキャプチャ取得: {len(img_bytes)} bytes")
+            return self._upload_image_bytes(img_bytes, "image/jpeg")
+        except Exception as e:
+            logger.warning(f"{_TAG} OBSキャプチャエラー: {e}")
+            return None
+
+    def _upload_image_bytes(self, img_bytes: bytes, mime_type: str = "image/jpeg") -> str | None:
+        """画像バイトを v1.1 media_upload でアップロードし media_id を返す"""
+        try:
+            import io
+            import tempfile
+            ext = ".jpg" if "jpeg" in mime_type else ".png"
+            with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as tmp:
+                tmp.write(img_bytes)
+                tmp_path = tmp.name
+            try:
+                media = self._api.media_upload(filename=tmp_path)
+                logger.info(f"{_TAG} 画像アップロード成功: media_id={media.media_id}")
+                return str(media.media_id)
+            finally:
+                import os as _os
+                _os.unlink(tmp_path)
+        except Exception as e:
+            logger.warning(f"{_TAG} 画像アップロードエラー: {e}")
+            return None
 
     # ========================================
     # 設定UI
@@ -398,8 +522,8 @@ class XTwitterPlugin(BasePlugin):
 
         self._panel = tk.Toplevel(parent_window)
         self._panel.title(_t("window_title"))
-        self._panel.geometry("480x560")
-        self._panel.minsize(460, 520)
+        self._panel.geometry("480x700")
+        self._panel.minsize(460, 660)
         self._panel.attributes("-topmost", True)
 
         main_f = ttk.Frame(self._panel, padding=10)
@@ -486,12 +610,113 @@ class XTwitterPlugin(BasePlugin):
         self._ent_default_tags.insert(0, settings.get("default_hashtags", ""))
         ttk.Label(post_f, text=_t("lbl_default_hashtag_hint"), foreground="gray", font=("", 7)).pack(anchor="w")
 
+        self._var_attach_url = tk.BooleanVar(value=settings.get("attach_stream_url", True))
+        ttk.Checkbutton(post_f, text=_t("chk_attach_url"), variable=self._var_attach_url).pack(anchor="w", pady=(4, 0))
+
+        # --- OBSキャプチャセクション（2カラム）---
+        obs_f = ttk.LabelFrame(main_f, text=_t("section_obs"), padding=8)
+        obs_f.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
+
+        obs_cols = ttk.Frame(obs_f)
+        obs_cols.pack(fill=tk.BOTH, expand=True)
+
+        # 左カラム: 設定項目
+        obs_left = ttk.Frame(obs_cols)
+        obs_left.pack(side="left", fill=tk.BOTH, expand=True, padx=(0, 6))
+
+        obs_row1 = ttk.Frame(obs_left)
+        obs_row1.pack(fill=tk.X, pady=(0, 2))
+        ttk.Label(obs_row1, text=_t("lbl_obs_host"), font=("", 8)).pack(anchor="w")
+        host_port_f = ttk.Frame(obs_row1)
+        host_port_f.pack(fill=tk.X)
+        self._ent_obs_host = ttk.Entry(host_port_f, font=("", 9), width=12)
+        self._ent_obs_host.pack(side="left")
+        self._ent_obs_host.insert(0, settings.get("obs_host", "127.0.0.1"))
+        ttk.Label(host_port_f, text=":", font=("", 8)).pack(side="left")
+        self._ent_obs_port = ttk.Entry(host_port_f, font=("", 9), width=5)
+        self._ent_obs_port.pack(side="left")
+        self._ent_obs_port.insert(0, str(settings.get("obs_port", 4455)))
+
+        ttk.Label(obs_left, text=_t("lbl_obs_password"), font=("", 8)).pack(anchor="w", pady=(2, 0))
+        self._ent_obs_password = ttk.Entry(obs_left, font=("", 9), show="*")
+        self._ent_obs_password.pack(fill=tk.X, pady=(0, 2))
+        self._ent_obs_password.insert(0, settings.get("obs_password", ""))
+
+        ttk.Label(obs_left, text=_t("lbl_obs_source"), font=("", 8)).pack(anchor="w", pady=(2, 0))
+        self._ent_obs_source = ttk.Entry(obs_left, font=("", 9))
+        self._ent_obs_source.pack(fill=tk.X, pady=(0, 4))
+        self._ent_obs_source.insert(0, settings.get("obs_source", ""))
+
+        obs_btn_f = ttk.Frame(obs_left)
+        obs_btn_f.pack(fill=tk.X)
+        tk.Button(
+            obs_btn_f, text=_t("btn_obs_test"), font=("", 8),
+            bg="#17a2b8", fg="white", command=self._on_obs_test,
+        ).pack(side="left")
+        self._lbl_obs_status = ttk.Label(obs_btn_f, text="", font=("", 7))
+        self._lbl_obs_status.pack(side="left", padx=(6, 0))
+
+        # 右カラム: プレビュー画像（16:9）
+        obs_right = ttk.Frame(obs_cols, width=192, height=108)
+        obs_right.pack(side="right", fill=tk.NONE, anchor="n")
+        obs_right.pack_propagate(False)
+        self._lbl_obs_preview = ttk.Label(obs_right, text="[ Preview ]", anchor="center",
+                                           background="#222", foreground="#666", font=("", 8))
+        self._lbl_obs_preview.pack(fill=tk.BOTH, expand=True)
+        self._obs_preview_photo = None
+
         # --- 閉じるボタン ---
         tk.Button(
             main_f, text=_t("btn_close"), bg="#6c757d", fg="white",
             font=("", 10, "bold"), command=self._save_and_close,
         ).pack(fill=tk.X, pady=(8, 0))
         self._panel.protocol("WM_DELETE_WINDOW", self._save_and_close)
+
+    def _on_obs_test(self):
+        """OBSキャプチャのテスト — プレビュー画像を表示"""
+        self._lbl_obs_status.config(text="...", foreground="orange")
+
+        def _do():
+            try:
+                import base64
+                import io
+                import obsws_python as obs
+                from PIL import Image, ImageTk
+
+                host = self._ent_obs_host.get().strip()
+                port = int(self._ent_obs_port.get().strip() or 4455)
+                password = self._ent_obs_password.get().strip()
+                source = self._ent_obs_source.get().strip()
+                if not source:
+                    if self._panel and self._panel.winfo_exists():
+                        self._panel.after(0, lambda: self._lbl_obs_status.config(
+                            text=_t("obs_test_fail", err="Source name empty"), foreground="red"))
+                    return
+
+                cl = obs.ReqClient(host=host, port=port, password=password, timeout=3)
+                res = cl.get_source_screenshot(source, "jpeg", 1280, 720, 80)
+                img_data = res.image_data
+                if img_data.startswith("data:image/jpeg;base64,"):
+                    img_data = img_data.replace("data:image/jpeg;base64,", "")
+                img_bytes = base64.b64decode(img_data)
+
+                # プレビュー画像を表示
+                img = Image.open(io.BytesIO(img_bytes))
+                img.thumbnail((192, 108))
+                if self._panel and self._panel.winfo_exists():
+                    def _show():
+                        self._obs_preview_photo = ImageTk.PhotoImage(img)
+                        self._lbl_obs_preview.config(image=self._obs_preview_photo, text="")
+                        self._lbl_obs_status.config(text=_t("obs_test_ok"), foreground="green")
+                    self._panel.after(0, _show)
+                logger.info(f"{_TAG} OBSテストキャプチャ成功: {len(img_bytes)} bytes")
+            except Exception as e:
+                logger.warning(f"{_TAG} OBSテストキャプチャ失敗: {e}")
+                if self._panel and self._panel.winfo_exists():
+                    self._panel.after(0, lambda: self._lbl_obs_status.config(
+                        text=_t("obs_test_fail", err=str(e)[:40]), foreground="red"))
+
+        threading.Thread(target=_do, daemon=True).start()
 
     def _on_test_auth(self):
         """接続テスト"""
@@ -537,5 +762,10 @@ class XTwitterPlugin(BasePlugin):
         settings["ai_post"] = self._var_ai_post.get()
         settings["viewer_post"] = self._var_viewer_post.get()
         settings["default_hashtags"] = self._ent_default_tags.get().strip()
+        settings["attach_stream_url"] = self._var_attach_url.get()
+        settings["obs_host"] = self._ent_obs_host.get().strip()
+        settings["obs_port"] = int(self._ent_obs_port.get().strip() or 4455)
+        settings["obs_password"] = self._ent_obs_password.get().strip()
+        settings["obs_source"] = self._ent_obs_source.get().strip()
         self.save_settings(settings)
         self._panel.destroy()
