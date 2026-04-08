@@ -83,6 +83,7 @@ Toggle each feature individually in the right column.
 | Voice Command | Action |
 |---|---|
 | "Create a poll" | AI creates a poll with question and choices |
+| "How's the poll going?" | Report poll progress |
 | "Show results" | Display poll results |
 | "Close the poll" | End the poll |
 
