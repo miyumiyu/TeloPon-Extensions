@@ -222,4 +222,4 @@ comments will be sent to the AI in duplicate. Please enable only one of them.
 
 ---
 
-[Back to Plugin List](../../../README.md#-standard-plugins-included-extension-details)
+[Back to Extension Plugin List](../../README_en.md)
