@@ -27,6 +27,7 @@ TeloPon の拡張パックです。プラグイン・プロンプト・テーマ
 | | プラグイン | Ver | 説明 | DL |
 |---|---|---|---|---|
 | 📺 | [YouTube Live+](docs/ja/YoutubeLiveOAuth.md) | 1.00 | YouTube OAuth連携。コメント読み書き・アンケート・タイトル変更・視聴者数取得。<br>👉 [詳細はこちら](docs/ja/YoutubeLiveOAuth.md) / [GCP設定ガイド](docs/ja/YoutubeLiveOAuth_GCP_Setup.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py) |
+| 📺 | [ニコニコ生放送](docs/ja/NiconicoLivePlugin.md) | 1.00 | ニコニコ生放送のコメント・ギフト・広告・アンケート・統計をリアルタイム取得。運営コメント投稿も対応。<br>👉 [詳細はこちら](docs/ja/NiconicoLivePlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py) |
 | 🐦 | [X (Twitter)](docs/ja/XTwitterPlugin.md) | 1.00 | ハッシュタグ取得・サムネ/画面キャプチャ付きツイート投稿。有料API（Pay Per Use）。<br>👉 [詳細はこちら](docs/ja/XTwitterPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py) |
 | 🔊 | [テロップ読み上げ (Windows)](docs/ja/WindowsTTS.md) | 1.00 | Windows標準音声（SAPI5）でテロップを自動読み上げ。<br>👉 [詳細はこちら](docs/ja/WindowsTTS.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py) |
 | 🔊 | [テロップ読み上げ (VOICEVOX)](docs/ja/voicevox_plugin.md) | 1.00 | VOICEVOX音声合成でテロップを読み上げ。多数のキャラクターボイス対応。<br>👉 [詳細はこちら](docs/ja/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |

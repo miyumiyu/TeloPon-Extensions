@@ -27,6 +27,7 @@
 | | Плагин | Ver | Описание | DL |
 |---|---|---|---|---|
 | 📺 | [YouTube Live+](docs/ru/YoutubeLiveOAuth.md) | 1.00 | YouTube OAuth. Чтение/запись, опросы, заголовок.<br>👉 [Подробнее](docs/ru/YoutubeLiveOAuth.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py) |
+| 📺 | [Niconico Live](docs/ru/NiconicoLivePlugin.md) | 1.00 | Комментарии, подарки, реклама, опросы и статистика Niconico в реальном времени.<br>👉 [Подробнее](docs/ru/NiconicoLivePlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py) |
 | 🐦 | [X (Twitter)](docs/ru/XTwitterPlugin.md) | 1.00 | Хэштеги, твиты с текстом/миниатюрой/скриншотом. Платно.<br>👉 [Подробнее](docs/ru/XTwitterPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py) |
 | 🔊 | [Озвучка телопов (Windows)](docs/ru/WindowsTTS.md) | 1.00 | Встроенный голос Windows.<br>👉 [Подробнее](docs/ru/WindowsTTS.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py) |
 | 🔊 | [Озвучка телопов (VOICEVOX)](docs/ru/voicevox_plugin.md) | 1.00 | VOICEVOX.<br>👉 [Подробнее](docs/ru/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |

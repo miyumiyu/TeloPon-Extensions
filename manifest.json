@@ -16,6 +16,21 @@
       "bundled_deps": true
     },
     {
+      "plugin_id": "niconico_live",
+      "name": "📺 ニコニコ生放送",
+      "name_en": "📺 Niconico Live",
+      "name_ko": "📺 니코니코 생방송",
+      "name_ru": "📺 Niconico Live",
+      "version": "1.00",
+      "description": "ニコニコ生放送のコメント・ギフト・広告・アンケート・統計をリアルタイム取得。運営コメント投稿も対応。",
+      "description_en": "Real-time Niconico live comments, gifts, ads, polls & stats. Operator comments supported.",
+      "type": "TOOL",
+      "files": ["NiconicoLivePlugin.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py",
+      "bundled_deps": false,
+      "note": "_niconico/ フォルダも必要です。プラグインマネージャーからダウンロード後、手動で配置してください。"
+    },
+    {
       "plugin_id": "windows_tts",
       "name": "🔊 テロップ読み上げ (Windows)",
       "name_en": "🔊 Telop TTS (Windows)",
