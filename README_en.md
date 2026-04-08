@@ -33,6 +33,7 @@ Copy the files you want to use into the corresponding TeloPon folder.
 | 🏢 | [Slack](docs/en/slack_integration.md) | 1.00 | Zero-delay real-time comment fetching from [Slack](https://slack.com/) channels via Socket Mode.<br>Auto user ID to name conversion.<br>👉 [Details](docs/en/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🗣️ | [VOICEVOX TTS](docs/en/voicevox_plugin.md) | 1.00 | Text-to-speech using [VOICEVOX](https://voicevox.hiroshiba.jp/) engine.<br>Multiple character voices and styles supported.<br>👉 [Details](docs/en/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
 | 📊 | [PowerPoint Control](docs/en/PowerPointPlugin.md) | 1.00 | Control PowerPoint slideshow by voice commands.<br>Next/prev slide, page jump, blackout, start/end presentation.<br>Auto-injects slide title and notes to AI on slide change.<br>👉 [Details](docs/en/PowerPointPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py) |
+| 🐦 | [X (Twitter)](docs/en/XTwitterPlugin.md) | 1.00 | Fetch hashtag tweets and inject into AI.<br>AI auto-posts tweets during stream. Requires X Developer Portal API keys (paid).<br>👉 [Details](docs/en/XTwitterPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py) |
 
 ---
 

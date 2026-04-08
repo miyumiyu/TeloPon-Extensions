@@ -33,6 +33,7 @@
 | 🏢 | [Slack](docs/ru/slack_integration.md) | 1.00 | Получение комментариев из [Slack](https://slack.com/) без задержки через Socket Mode.<br>Авто-конвертация ID пользователей в имена.<br>👉 [Подробнее](docs/ru/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🗣️ | [VOICEVOX](docs/ru/voicevox_plugin.md) | 1.00 | Озвучка телопов движком [VOICEVOX](https://voicevox.hiroshiba.jp/).<br>Множество голосов персонажей и стилей.<br>👉 [Подробнее](docs/ru/voicevox_plugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/voicevox_plugin.py) |
 | 📊 | [PowerPoint](docs/ru/PowerPointPlugin.md) | 1.00 | Управление слайд-шоу PowerPoint голосом.<br>Следующий/предыдущий слайд, переход к странице, затемнение, начало/конец презентации.<br>Автоматическая передача заголовка и заметок слайда в ИИ.<br>👉 [Подробнее](docs/ru/PowerPointPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py) |
+| 🐦 | [X (Twitter)](docs/ru/XTwitterPlugin.md) | 1.00 | Получение твитов по хэштегу и передача ИИ.<br>ИИ автоматически публикует твиты во время трансляции. Требуются API-ключи X Developer Portal (платно).<br>👉 [Подробнее](docs/ru/XTwitterPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py) |
 
 ---
 

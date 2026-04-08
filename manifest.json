@@ -98,6 +98,20 @@
       "files": ["PowerPointPlugin.py"],
       "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/PowerPointPlugin.py",
       "bundled_deps": true
+    },
+    {
+      "plugin_id": "twitter_x",
+      "name": "X (Twitter) 連携",
+      "name_en": "X (Twitter) Integration",
+      "name_ko": "X (Twitter) 연동",
+      "name_ru": "X (Twitter)",
+      "version": "1.00",
+      "description": "ハッシュタグのツイートを取得してAIに注入。AIが配信中にツイートを自動投稿。",
+      "description_en": "Fetch hashtag tweets for AI. AI auto-posts tweets during stream.",
+      "type": "TOOL",
+      "files": ["XTwitterPlugin.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py",
+      "bundled_deps": false
     }
   ]
 }
