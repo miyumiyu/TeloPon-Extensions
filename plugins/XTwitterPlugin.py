@@ -664,6 +664,9 @@ class XTwitterPlugin(BasePlugin):
         self._lbl_obs_preview.pack(fill=tk.BOTH, expand=True)
         self._obs_preview_photo = None
 
+        # 起動時にシーン一覧を取得
+        self._fetch_obs_scenes()
+
         # --- 閉じるボタン ---
         tk.Button(
             main_f, text=_t("btn_close"), bg="#6c757d", fg="white",
