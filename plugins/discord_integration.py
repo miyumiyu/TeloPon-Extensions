@@ -22,7 +22,7 @@ import logger # ★TeloPon標準ロガー
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "Discordリアルタイム連携",
+        "plugin_name": "💬 Discord",
         "window_title": "⚙️ Discordリアルタイム連携設定",
         "err_no_lib": "⚠️ エラー: discord.py がインストールされていません。\nコマンドプロンプトで pip install discord.py を実行してください。",
         "status_disconnected": "🔌 状態: 切断中",
@@ -54,7 +54,7 @@ _L = {
         "default_prompt": "【Discordからのコメント】モデレーターからの指示または視聴者のコメントです！\n",
     },
     "en": {
-        "plugin_name": "Discord Realtime Integration",
+        "plugin_name": "💬 Discord",
         "window_title": "⚙️ Discord Realtime Integration Settings",
         "err_no_lib": "⚠️ Error: discord.py is not installed.\nRun: pip install discord.py",
         "status_disconnected": "🔌 Status: Disconnected",
@@ -86,7 +86,7 @@ _L = {
         "default_prompt": "[Discord Comment] This is a message from a moderator or viewer!\n",
     },
     "ru": {
-        "plugin_name": "Discord Realtime",
+        "plugin_name": "💬 Discord",
         "window_title": "⚙️ Настройки Discord Realtime",
         "err_no_lib": "⚠️ Ошибка: discord.py не установлен.\nВыполните: pip install discord.py",
         "status_disconnected": "🔌 Статус: Отключено",
@@ -118,7 +118,7 @@ _L = {
         "default_prompt": "[Комментарий Discord] Это сообщение от модератора или зрителя!\n",
     },
     "ko": {
-        "plugin_name": "Discord 실시간 연동",
+        "plugin_name": "💬 Discord",
         "window_title": "⚙️ Discord 실시간 연동 설정",
         "err_no_lib": "⚠️ 오류: discord.py가 설치되어 있지 않습니다.\n실행하세요: pip install discord.py",
         "status_disconnected": "🔌 상태: 연결 끊김",

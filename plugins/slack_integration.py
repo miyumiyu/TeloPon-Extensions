@@ -25,7 +25,7 @@ import logger # ★TeloPon標準ロガー
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "Slackコメント連携",
+        "plugin_name": "💬 Slack",
         "window_title": "⚙️ Slackコメント連携設定 (リアルタイム版)",
         "err_no_lib": "⚠️ エラー: slack_sdk がインストールされていません。\nコマンドプロンプトで pip install slack_sdk を実行してください。",
         "status_disconnected": "🔌 状態: 切断中",
@@ -53,7 +53,7 @@ _L = {
         "default_prompt": "【Slackからのコメント】社内メンバーからのチャットです！コメントを読み上げてリアクションしてください！\n",
     },
     "en": {
-        "plugin_name": "Slack Comment Integration",
+        "plugin_name": "💬 Slack",
         "window_title": "⚙️ Slack Comment Integration Settings (Realtime)",
         "err_no_lib": "⚠️ Error: slack_sdk is not installed.\nRun: pip install slack_sdk",
         "status_disconnected": "🔌 Status: Disconnected",
@@ -81,7 +81,7 @@ _L = {
         "default_prompt": "[Slack Comment] A message from a team member! Please read the comment and react!\n",
     },
     "ru": {
-        "plugin_name": "Интеграция Slack",
+        "plugin_name": "💬 Slack",
         "window_title": "⚙️ Настройки Slack (реальное время)",
         "err_no_lib": "⚠️ Ошибка: slack_sdk не установлен.\nВыполните: pip install slack_sdk",
         "status_disconnected": "🔌 Статус: Отключено",
@@ -109,7 +109,7 @@ _L = {
         "default_prompt": "[Комментарий Slack] Сообщение от участника команды! Прочитайте комментарий и отреагируйте!\n",
     },
     "ko": {
-        "plugin_name": "Slack 댓글 연동",
+        "plugin_name": "💬 Slack",
         "window_title": "⚙️ Slack 댓글 연동 설정 (실시간)",
         "err_no_lib": "⚠️ 오류: slack_sdk가 설치되어 있지 않습니다.\n실행하세요: pip install slack_sdk",
         "status_disconnected": "🔌 상태: 연결 끊김",

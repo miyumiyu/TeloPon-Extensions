@@ -39,7 +39,7 @@ except ImportError:
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "VOICEVOX読み上げ",
+        "plugin_name": "🔊 テロップ読み上げ (VOICEVOX)",
         "window_title": "⚙️ VOICEVOX設定",
         "lf_conn": " VOICEVOX接続設定 ",
         "label_url": "URL:",
@@ -65,7 +65,7 @@ _L = {
         "no_speakers": "（VOICEVOXに接続して取得）",
     },
     "en": {
-        "plugin_name": "VOICEVOX TTS",
+        "plugin_name": "🔊 Telop TTS (VOICEVOX)",
         "window_title": "⚙️ VOICEVOX Settings",
         "lf_conn": " VOICEVOX Connection ",
         "label_url": "URL:",
@@ -91,7 +91,7 @@ _L = {
         "no_speakers": "(Connect to VOICEVOX to load)",
     },
     "ko": {
-        "plugin_name": "VOICEVOX 읽기",
+        "plugin_name": "🔊 텔롭 읽기 (VOICEVOX)",
         "window_title": "⚙️ VOICEVOX 설정",
         "lf_conn": " VOICEVOX 연결 설정 ",
         "label_url": "URL:",
@@ -117,7 +117,7 @@ _L = {
         "no_speakers": "(VOICEVOX에 연결하여 로드)",
     },
     "ru": {
-        "plugin_name": "VOICEVOX TTS",
+        "plugin_name": "🔊 Озвучка телопов (VOICEVOX)",
         "window_title": "⚙️ Настройки VOICEVOX",
         "lf_conn": " Подключение VOICEVOX ",
         "label_url": "URL:",

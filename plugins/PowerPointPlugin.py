@@ -28,7 +28,7 @@ except ImportError:
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "PowerPoint操作",
+        "plugin_name": "📊 PowerPoint操作",
         "panel_title": "PowerPoint操作 設定",
         "chk_enabled": "PowerPoint連携 ON",
         "lf_status": " 接続状態 ",
@@ -50,7 +50,7 @@ _L = {
         "note_cue_no_notes": "【プレゼン資料のカンペ】\nスライド {current}/{total}: {title}",
     },
     "en": {
-        "plugin_name": "PowerPoint Control",
+        "plugin_name": "📊 PowerPoint Control",
         "panel_title": "PowerPoint Control Settings",
         "chk_enabled": "PowerPoint Integration ON",
         "lf_status": " Connection Status ",
@@ -72,7 +72,7 @@ _L = {
         "note_cue_no_notes": "[Presentation Notes]\nSlide {current}/{total}: {title}",
     },
     "ko": {
-        "plugin_name": "PowerPoint 조작",
+        "plugin_name": "📊 PowerPoint 조작",
         "panel_title": "PowerPoint 조작 설정",
         "chk_enabled": "PowerPoint 연동 ON",
         "lf_status": " 연결 상태 ",
@@ -94,7 +94,7 @@ _L = {
         "note_cue_no_notes": "[프레젠테이션 노트]\n슬라이드 {current}/{total}: {title}",
     },
     "ru": {
-        "plugin_name": "Управление PowerPoint",
+        "plugin_name": "📊 Управление PowerPoint",
         "panel_title": "Настройки PowerPoint",
         "chk_enabled": "PowerPoint ВКЛ",
         "lf_status": " Состояние ",

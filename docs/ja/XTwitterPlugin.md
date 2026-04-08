@@ -23,11 +23,6 @@
 ## ⚙️ 必要環境
 
 - X (Twitter) Developer Portal のアプリ（**Pay Per Use パッケージに追加**済み）
-- 以下のライブラリが必要です:
-
-```
-pip install tweepy
-```
 
 ---
 

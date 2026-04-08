@@ -28,7 +28,7 @@ import logger
 # ==========================================
 _L = {
     "ja": {
-        "plugin_name": "YouTube OAuth連携",
+        "plugin_name": "📺 YouTube Live+",
         "window_title": "YouTube OAuth連携 設定",
         "import_error_title": "ライブラリ不足",
         "import_error_msg": (
@@ -40,6 +40,9 @@ _L = {
         "section_oauth": " OAuth2 認証設定 ",
         "lbl_client_id": "Client ID:",
         "lbl_client_secret": "Client Secret:",
+        "btn_load_json": "📂 JSONファイルを読み込み",
+        "json_loaded": "✅ JSONから読み込みました",
+        "json_load_error": "❌ JSONの読み込みに失敗: {err}",
         "btn_auth": "Googleで認証する",
         "btn_auth_running": "認証キャンセル",
         "btn_copy": "コピー",
@@ -168,7 +171,7 @@ _L = {
         ),
     },
     "en": {
-        "plugin_name": "YouTube OAuth Plugin",
+        "plugin_name": "📺 YouTube Live+",
         "window_title": "YouTube OAuth Settings",
         "import_error_title": "Missing Libraries",
         "import_error_msg": (
@@ -179,6 +182,9 @@ _L = {
         "section_oauth": " OAuth2 Authentication ",
         "lbl_client_id": "Client ID:",
         "lbl_client_secret": "Client Secret:",
+        "btn_load_json": "📂 Load JSON file",
+        "json_loaded": "✅ Loaded from JSON",
+        "json_load_error": "❌ Failed to load JSON: {err}",
         "btn_auth": "Sign in with Google",
         "btn_auth_running": "Cancel auth",
         "btn_copy": "Copy",
@@ -285,7 +291,7 @@ _L = {
         ),
     },
     "ko": {
-        "plugin_name": "YouTube OAuth 연동",
+        "plugin_name": "📺 YouTube Live+",
         "window_title": "YouTube OAuth 설정",
         "import_error_title": "라이브러리 부족",
         "import_error_msg": (
@@ -296,6 +302,9 @@ _L = {
         "section_oauth": " OAuth2 인증 설정 ",
         "lbl_client_id": "Client ID:",
         "lbl_client_secret": "Client Secret:",
+        "btn_load_json": "📂 JSON 파일 불러오기",
+        "json_loaded": "✅ JSON에서 불러왔습니다",
+        "json_load_error": "❌ JSON 불러오기 실패: {err}",
         "btn_auth": "Google로 인증",
         "btn_auth_running": "인증 취소",
         "btn_copy": "복사",
@@ -400,7 +409,7 @@ _L = {
         ),
     },
     "ru": {
-        "plugin_name": "YouTube OAuth",
+        "plugin_name": "📺 YouTube Live+",
         "window_title": "Настройки YouTube OAuth",
         "import_error_title": "Отсутствуют библиотеки",
         "import_error_msg": (
@@ -411,6 +420,9 @@ _L = {
         "section_oauth": " Аутентификация OAuth2 ",
         "lbl_client_id": "Client ID:",
         "lbl_client_secret": "Client Secret:",
+        "btn_load_json": "📂 Загрузить JSON файл",
+        "json_loaded": "✅ Загружено из JSON",
+        "json_load_error": "❌ Ошибка загрузки JSON: {err}",
         "btn_auth": "Войти через Google",
         "btn_auth_running": "Отмена",
         "btn_copy": "Копировать",
@@ -686,8 +698,13 @@ class YoutubeLiveOAuth(BasePlugin):
                 logger.error(f"[{self.PLUGIN_NAME}] トークン保存エラー: {e}")
 
     def _run_oauth_flow(self, client_id, client_secret):
-        """OAuth2認証フローを実行（ブラウザが開く）"""
+        """OAuth2認証フローを実行（ブラウザが開く）
+        run_local_server を使わず自前でサーバーを管理し、
+        state不一致のリクエストは無視して正しいコールバックを待つ。"""
+        import socket
         import webbrowser
+        from http.server import HTTPServer, BaseHTTPRequestHandler
+        from urllib.parse import urlparse, parse_qs
 
         client_config = {
             "installed": {
@@ -699,32 +716,72 @@ class YoutubeLiveOAuth(BasePlugin):
             }
         }
         flow = InstalledAppFlow.from_client_config(client_config, _SCOPES)
+        flow.redirect_uri = "http://localhost:8099/"
 
-        # 認証URLを取得してUI表示
-        auth_url, _ = flow.authorization_url(prompt="consent")
+        auth_url, expected_state = flow.authorization_url(prompt="consent")
         if hasattr(self, 'panel') and self.panel.winfo_exists():
             self.panel.after(0, lambda: self._show_auth_url(auth_url))
 
-        # ブラウザを開いてローカルサーバーで待機
-        # SO_REUSEADDR でポート再利用可能にする（キャンセル後の再認証でポート競合を防止）
-        import wsgiref.simple_server
-        original_init = wsgiref.simple_server.WSGIServer.__init__
+        # 認証コードを受け取る変数
+        auth_code = [None]  # リストで参照渡し
 
-        def _patched_init(self_server, *args, **kwargs):
-            import socket
-            self_server.allow_reuse_address = True
-            original_init(self_server, *args, **kwargs)
-            self_server.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        plugin_self = self
 
-        wsgiref.simple_server.WSGIServer.__init__ = _patched_init
+        class _AuthHandler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                qs = parse_qs(urlparse(self.path).query)
+                state = qs.get("state", [None])[0]
+                code = qs.get("code", [None])[0]
+
+                if state != expected_state:
+                    # state不一致（古いタブからのリクエスト）→ 無視して待ち続ける
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/html; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write("認証情報が一致しません。新しいタブで再度お試しください。".encode("utf-8"))
+                    logger.debug(f"[{plugin_self.PLUGIN_NAME}] state不一致リクエストを無視")
+                    return
+
+                auth_code[0] = code
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write("認証が完了しました。このタブを閉じてください。".encode("utf-8"))
+
+            def log_message(self, format, *args):
+                pass  # ログ抑制
+
+        # SO_REUSEADDR 対応サーバー
+        class _ReuseHTTPServer(HTTPServer):
+            allow_reuse_address = True
+            def server_bind(self):
+                self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                super().server_bind()
+
+        server = _ReuseHTTPServer(("localhost", 8099), _AuthHandler)
+        server.timeout = 1  # handle_request() が1秒でタイムアウト→キャンセルチェック可能
+        self._oauth_server = server
+
+        # ブラウザを開く
+        webbrowser.open(auth_url)
+
+        # 正しいauth_codeが来るまでリクエストを処理し続ける
         try:
-            self._credentials = flow.run_local_server(port=8099, open_browser=True)
+            while auth_code[0] is None:
+                if getattr(self, '_auth_cancelled', False):
+                    return
+                server.handle_request()  # timeout=1 で1秒ごとにループ
         finally:
-            wsgiref.simple_server.WSGIServer.__init__ = original_init
+            server.server_close()
+            self._oauth_server = None
 
         if getattr(self, '_auth_cancelled', False):
             self._credentials = None
             return
+
+        # 認証コードからトークンを取得
+        flow.fetch_token(code=auth_code[0])
+        self._credentials = flow.credentials
 
         self._save_token()
         self._youtube = self._build_youtube_service()
@@ -795,6 +852,14 @@ class YoutubeLiveOAuth(BasePlugin):
         # OAuth2 セクション
         oauth_f = ttk.LabelFrame(left_f, text=_t("section_oauth"), padding=8)
         oauth_f.pack(fill=tk.X, pady=(0, 8))
+
+        # JSON読み込みボタン
+        tk.Button(
+            oauth_f, text=_t("btn_load_json"), font=("", 9),
+            bg="#f0f0f0", command=self._on_load_json,
+        ).pack(fill=tk.X, pady=(0, 5))
+        self._lbl_json_status = ttk.Label(oauth_f, text="", font=("", 8))
+        self._lbl_json_status.pack(anchor="w", pady=(0, 3))
 
         ttk.Label(oauth_f, text=_t("lbl_client_id")).pack(anchor="w")
         self._var_client_id = tk.StringVar(value=settings.get("client_id", ""))
@@ -967,6 +1032,34 @@ class YoutubeLiveOAuth(BasePlugin):
     # ==========================================
     # OAuth2 UI アクション
     # ==========================================
+    def _on_load_json(self):
+        """GoogleのOAuth2クライアントJSONファイルを読み込んでClient ID/Secretを設定"""
+        from tkinter import filedialog
+        path = filedialog.askopenfilename(
+            parent=self.panel,
+            title="OAuth2 Client JSON",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+        )
+        if not path:
+            return
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            # Google Cloud Console の形式: {"installed": {"client_id": ..., "client_secret": ...}}
+            # または {"web": {"client_id": ..., "client_secret": ...}}
+            inner = data.get("installed") or data.get("web") or data
+            cid = inner.get("client_id", "")
+            csecret = inner.get("client_secret", "")
+            if not cid or not csecret:
+                raise ValueError("client_id or client_secret not found")
+            self._var_client_id.set(cid)
+            self._var_client_secret.set(csecret)
+            self._lbl_json_status.config(text=_t("json_loaded"), foreground="green")
+            logger.info(f"[{self.PLUGIN_NAME}] JSONからOAuth2認証情報を読み込みました")
+        except Exception as e:
+            self._lbl_json_status.config(text=_t("json_load_error", err=str(e)[:50]), foreground="red")
+            logger.warning(f"[{self.PLUGIN_NAME}] JSON読み込みエラー: {e}")
+
     def _on_credentials_changed(self, *_):
         """Client ID/Secret入力の変更を監視してボタンの有効/無効を切替"""
         if self.is_authenticated:
@@ -978,6 +1071,8 @@ class YoutubeLiveOAuth(BasePlugin):
     def _on_auth_cancel(self):
         """認証中キャンセル"""
         self._auth_cancelled = True
+        # handle_request() は timeout=1 でループしているため、
+        # _auth_cancelled=True を設定するだけで最大1秒以内にループを抜ける
         self._hide_auth_url()
         self.btn_auth.config(state="normal", text=_t("btn_auth"), bg="#4285f4",
                              command=self._on_auth_click)
@@ -1471,6 +1566,13 @@ class YoutubeLiveOAuth(BasePlugin):
 
             self.is_connected = True
             self._update_enabled_state(True)
+
+            # 配信情報をコア共有機構にセット
+            yt_url = f"https://www.youtube.com/watch?v={self._broadcast_id}" if hasattr(self, '_broadcast_id') and self._broadcast_id else ""
+            self.set_stream_info(
+                url=yt_url, thumbnail=getattr(self, 'thumbnail_bytes', None),
+                title=self.yt_title, platform="YouTube OAuth",
+            )
 
             if hasattr(self, 'panel') and self.panel.winfo_exists():
                 self.panel.after(0, self._update_ui_connected)

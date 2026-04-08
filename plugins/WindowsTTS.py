@@ -42,7 +42,7 @@ except ImportError:
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "Windows 読み上げ",
+        "plugin_name": "🔊 テロップ読み上げ (Windows)",
         "panel_title": "Windows 読み上げ 設定",
         "chk_enabled": "読み上げ ON",
         "lf_voice": " 音声設定 ",
@@ -66,7 +66,7 @@ _L = {
         "import_error": "pyttsx3が必要です（pip install pyttsx3）",
     },
     "en": {
-        "plugin_name": "Windows TTS",
+        "plugin_name": "🔊 Telop TTS (Windows)",
         "panel_title": "Windows TTS Settings",
         "chk_enabled": "TTS ON",
         "lf_voice": " Voice Settings ",
@@ -90,7 +90,7 @@ _L = {
         "import_error": "pyttsx3 required (pip install pyttsx3)",
     },
     "ko": {
-        "plugin_name": "Windows 음성",
+        "plugin_name": "🔊 텔롭 읽기 (Windows)",
         "panel_title": "Windows 음성 설정",
         "chk_enabled": "음성 ON",
         "lf_voice": " 음성 설정 ",
@@ -114,7 +114,7 @@ _L = {
         "import_error": "pyttsx3 필요 (pip install pyttsx3)",
     },
     "ru": {
-        "plugin_name": "Windows TTS",
+        "plugin_name": "🔊 Озвучка телопов (Windows)",
         "panel_title": "Настройки Windows TTS",
         "chk_enabled": "TTS ВКЛ",
         "lf_voice": " Настройки голоса ",

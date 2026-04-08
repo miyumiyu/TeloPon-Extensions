@@ -25,7 +25,7 @@ except ImportError:
 # --- i18n ---
 _L = {
     "ja": {
-        "plugin_name": "VCI OSC テロップ",
+        "plugin_name": "🎮 VCI テロップ送信",
         "panel_title": "🎮 VCI OSC テロップ設定",
         "lf_conn": " OSC接続設定 ",
         "label_ip": "送信先IP:",
@@ -45,7 +45,7 @@ _L = {
         "warn_no_lib": "python-oscライブラリが見つかりません（pip install python-osc）",
     },
     "en": {
-        "plugin_name": "VCI OSC Telop",
+        "plugin_name": "🎮 VCI Telop Sender",
         "panel_title": "🎮 VCI OSC Telop Settings",
         "lf_conn": " OSC Connection ",
         "label_ip": "Target IP:",
@@ -65,7 +65,7 @@ _L = {
         "warn_no_lib": "python-osc library not found (pip install python-osc)",
     },
     "ko": {
-        "plugin_name": "VCI OSC 텔롭",
+        "plugin_name": "🎮 VCI 텔롭 전송",
         "panel_title": "🎮 VCI OSC 텔롭 설정",
         "lf_conn": " OSC 연결 설정 ",
         "label_ip": "대상 IP:",
@@ -85,7 +85,7 @@ _L = {
         "warn_no_lib": "python-osc 라이브러리를 찾을 수 없습니다 (pip install python-osc)",
     },
     "ru": {
-        "plugin_name": "VCI OSC телоп",
+        "plugin_name": "🎮 VCI телоп",
         "panel_title": "🎮 Настройки VCI OSC",
         "lf_conn": " Подключение OSC ",
         "label_ip": "IP-адрес:",
