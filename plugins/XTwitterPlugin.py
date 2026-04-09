@@ -39,6 +39,8 @@ _L = {
         "import_error": "tweepy がインストールされていません。\npip install tweepy を実行してください。",
         # 認証
         "section_auth": " 🔑 API認証設定 ",
+        "btn_connect": "接続",
+        "btn_disconnect": "切断",
         "lbl_auth_hint": "※ X Developer Portal でアプリを作成し、4つのキーを入力してください",
         "lbl_api_key": "API Key (Consumer Key):",
         "lbl_api_secret": "API Secret (Consumer Secret):",
@@ -108,6 +110,8 @@ _L = {
         "window_title": "⚙️ X (Twitter) Settings",
         "import_error": "tweepy is not installed.\nPlease run: pip install tweepy",
         "section_auth": " 🔑 API Authentication ",
+        "btn_connect": "Connect",
+        "btn_disconnect": "Disconnect",
         "lbl_auth_hint": "※ Create an app in X Developer Portal and enter the 4 keys",
         "lbl_api_key": "API Key (Consumer Key):",
         "lbl_api_secret": "API Secret (Consumer Secret):",
@@ -555,25 +559,33 @@ class XTwitterPlugin(BasePlugin):
         self._ent_access_secret.pack(fill=tk.X, pady=(0, 2))
         self._ent_access_secret.insert(0, settings.get("access_secret", ""))
 
-        test_f = ttk.Frame(auth_f)
-        test_f.pack(fill=tk.X, pady=(4, 0))
-        self._btn_test = tk.Button(
-            test_f, text=_t("btn_test_auth"), bg="#1DA1F2", fg="white",
-            font=("", 9, "bold"), command=self._on_test_auth,
-        )
-        self._btn_test.pack(side="left")
+        btn_f = ttk.Frame(auth_f)
+        btn_f.pack(fill=tk.X, pady=(4, 0))
+        if self.is_connected:
+            self._btn_connect = tk.Button(
+                btn_f, text=_t("btn_disconnect"), bg="#dc3545", fg="white",
+                font=("", 9, "bold"), command=self._on_disconnect,
+            )
+        else:
+            self._btn_connect = tk.Button(
+                btn_f, text=_t("btn_connect"), bg="#1DA1F2", fg="white",
+                font=("", 9, "bold"), command=self._on_test_auth,
+            )
+        self._btn_connect.pack(side="left")
         self._lbl_auth_status = ttk.Label(
-            test_f, text=_t("auth_ok", screen_name=self._auth_user) if self.is_connected else _t("auth_none"),
+            btn_f, text=_t("auth_ok", screen_name=self._auth_user) if self.is_connected else _t("auth_none"),
             foreground="green" if self.is_connected else "gray", font=("", 8),
         )
         self._lbl_auth_status.pack(side="left", padx=(8, 0))
 
         # --- ハッシュタグセクション ---
-        hash_f = ttk.LabelFrame(main_f, text=_t("section_hashtag"), padding=8)
-        hash_f.pack(fill=tk.X, pady=(0, 8))
+        self._hash_f = ttk.LabelFrame(main_f, text=_t("section_hashtag"), padding=8)
+        self._hash_f.pack(fill=tk.X, pady=(0, 8))
+        hash_f = self._hash_f
 
         self._var_fetch = tk.BooleanVar(value=settings.get("fetch_hashtag", True))
-        ttk.Checkbutton(hash_f, text=_t("chk_fetch_hashtag"), variable=self._var_fetch).pack(anchor="w")
+        ttk.Checkbutton(hash_f, text=_t("chk_fetch_hashtag"), variable=self._var_fetch,
+                        command=self._update_badge).pack(anchor="w")
 
         ht_f = ttk.Frame(hash_f)
         ht_f.pack(fill=tk.X, pady=(4, 0))
@@ -591,13 +603,15 @@ class XTwitterPlugin(BasePlugin):
                      width=6, font=("", 9)).pack(side="left", padx=(4, 0))
 
         # --- 投稿セクション ---
-        post_f = ttk.LabelFrame(main_f, text=_t("section_post"), padding=8)
-        post_f.pack(fill=tk.X, pady=(0, 8))
+        self._post_f = ttk.LabelFrame(main_f, text=_t("section_post"), padding=8)
+        self._post_f.pack(fill=tk.X, pady=(0, 8))
+        post_f = self._post_f
 
         row_f = ttk.Frame(post_f)
         row_f.pack(fill=tk.X)
         self._var_ai_post = tk.BooleanVar(value=settings.get("ai_post", True))
-        ttk.Checkbutton(row_f, text=_t("chk_ai_post"), variable=self._var_ai_post).pack(side="left")
+        ttk.Checkbutton(row_f, text=_t("chk_ai_post"), variable=self._var_ai_post,
+                        command=self._update_badge).pack(side="left")
         self._var_viewer_post = tk.BooleanVar(value=settings.get("viewer_post", False))
         ttk.Label(row_f, text=_t("chk_viewer_ok"), font=("", 7), foreground="gray").pack(side="left", padx=(12, 0))
         ttk.Checkbutton(row_f, variable=self._var_viewer_post).pack(side="left")
@@ -612,8 +626,9 @@ class XTwitterPlugin(BasePlugin):
         ttk.Checkbutton(post_f, text=_t("chk_attach_url"), variable=self._var_attach_url).pack(anchor="w", pady=(4, 0))
 
         # --- OBSキャプチャセクション（2カラム）---
-        obs_f = ttk.LabelFrame(main_f, text=_t("section_obs"), padding=8)
-        obs_f.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
+        self._obs_f = ttk.LabelFrame(main_f, text=_t("section_obs"), padding=8)
+        self._obs_f.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
+        obs_f = self._obs_f
 
         obs_cols = ttk.Frame(obs_f)
         obs_cols.pack(fill=tk.BOTH, expand=True)
@@ -673,6 +688,9 @@ class XTwitterPlugin(BasePlugin):
             font=("", 10, "bold"), command=self._save_and_close,
         ).pack(fill=tk.X, pady=(8, 0))
         self._panel.protocol("WM_DELETE_WINDOW", self._save_and_close)
+
+        # 認証状態に応じて機能セクションをグレーアウト
+        self._update_feature_state()
 
     def _fetch_obs_scenes(self):
         """OBSからシーン一覧を取得してコンボボックスに設定"""
@@ -742,28 +760,82 @@ class XTwitterPlugin(BasePlugin):
 
         threading.Thread(target=_do, daemon=True).start()
 
+    def _update_badge(self):
+        """コアUIのバッジ表示を更新: 接続中 AND (取得 or 投稿) でアクティブ"""
+        if self._api:
+            fetch = self._var_fetch.get() if hasattr(self, '_var_fetch') else False
+            post = self._var_ai_post.get() if hasattr(self, '_var_ai_post') else False
+            self.is_connected = fetch or post
+        else:
+            self.is_connected = False
+
+    def _update_feature_state(self):
+        """認証状態に応じて機能セクションを有効/無効切替"""
+        state = "!disabled" if self.is_connected else "disabled"
+        for frame in [self._hash_f, self._post_f, self._obs_f]:
+            if hasattr(self, '_panel') and frame.winfo_exists():
+                for child in frame.winfo_children():
+                    try:
+                        child.state([state])
+                    except (AttributeError, tk.TclError):
+                        try:
+                            child.config(state="normal" if self.is_connected else "disabled")
+                        except (AttributeError, tk.TclError):
+                            pass
+
+    def _on_disconnect(self):
+        """切断"""
+        self._api = None
+        self._auth_user = None
+        self.is_connected = False
+        settings = self.get_settings()
+        settings["enabled"] = False
+        self.save_settings(settings)
+        if hasattr(self, '_btn_connect'):
+            self._btn_connect.config(
+                state="normal", text=_t("btn_connect"), bg="#1DA1F2",
+                command=self._on_test_auth,
+            )
+        if hasattr(self, '_lbl_auth_status'):
+            self._lbl_auth_status.config(text=_t("auth_none"), foreground="gray")
+        self._update_feature_state()
+        logger.info(f"{_TAG} 切断しました")
+
     def _on_test_auth(self):
-        """接続テスト"""
+        """接続"""
         self._save_keys()
-        self._btn_test.config(state="disabled", text=_t("btn_testing"))
+        self._btn_connect.config(state="disabled", text=_t("btn_testing"))
         self._lbl_auth_status.config(text=_t("btn_testing"), foreground="orange")
 
         def _do():
             ok = self._build_client()
             if self._panel and self._panel.winfo_exists():
                 if ok:
-                    self._panel.after(0, lambda: self._lbl_auth_status.config(
-                        text=_t("auth_ok", screen_name=self._auth_user), foreground="green"
-                    ))
+                    self._panel.after(0, self._on_connect_success)
                 else:
-                    self._panel.after(0, lambda: self._lbl_auth_status.config(
-                        text=_t("auth_fail", err="Invalid credentials"), foreground="red"
-                    ))
-                self._panel.after(0, lambda: self._btn_test.config(
-                    state="normal", text=_t("btn_test_auth")
-                ))
+                    self._panel.after(0, self._on_connect_fail)
 
         threading.Thread(target=_do, daemon=True).start()
+
+    def _on_connect_success(self):
+        self._btn_connect.config(
+            state="normal", text=_t("btn_disconnect"), bg="#dc3545",
+            command=self._on_disconnect,
+        )
+        self._lbl_auth_status.config(
+            text=_t("auth_ok", screen_name=self._auth_user), foreground="green",
+        )
+        self._update_feature_state()
+        self._update_badge()
+
+    def _on_connect_fail(self):
+        self._btn_connect.config(
+            state="normal", text=_t("btn_connect"), bg="#1DA1F2",
+            command=self._on_test_auth,
+        )
+        self._lbl_auth_status.config(
+            text=_t("auth_fail", err="Invalid credentials"), foreground="red",
+        )
 
     def _save_keys(self):
         """キー入力をsettingsに保存"""
