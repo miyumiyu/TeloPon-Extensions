@@ -104,6 +104,15 @@ _L = {
         ),
         "post_ok_cue": "【カンペ】ツイート「{text}」を投稿しました。",
         "post_fail_cue": "【カンペ】ツイート投稿に失敗しました。",
+        "video_capturing": "【カンペ】OBSリプレイバッファを保存しています...",
+        "video_uploading": "【カンペ】動画をXにアップロードしています...",
+        "video_ok_cue": "【カンペ】動画ツイート「{text}」を投稿しました。",
+        "video_fail_cue": "【カンペ】動画ツイートに失敗しました: {err}",
+        "prompt_cmd_video": (
+            "* 動画付き投稿（直前の配信映像）: [CMD]X:post_video 100文字以内のツイート内容\n"
+            "## 配信者の発言に対する反応ルール（追加）\n"
+            "* 「動画送って」「Xに動画投稿して」「今のシーン送って」→ [CMD]X:post_video 内容\n"
+        ),
     },
     "en": {
         "plugin_name": "🐦 X (Twitter)",
@@ -160,6 +169,14 @@ _L = {
         ),
         "post_ok_cue": "[Cue] Tweeted: \"{text}\"",
         "post_fail_cue": "[Cue] Tweet posting failed.",
+        "video_capturing": "[Cue] Saving OBS replay buffer...",
+        "video_uploading": "[Cue] Uploading video to X...",
+        "video_ok_cue": "[Cue] Video tweeted: \"{text}\"",
+        "video_fail_cue": "[Cue] Video tweet failed: {err}",
+        "prompt_cmd_video": (
+            "* With replay video: [CMD]X:post_video content (under 100 chars)\n"
+            "* \"Send video\", \"Post video to X\", \"Post that scene\" → [CMD]X:post_video content\n"
+        ),
     },
 }
 
@@ -287,6 +304,8 @@ class XTwitterPlugin(BasePlugin):
         if settings.get("ai_post", True):
             default_tags = settings.get("default_hashtags", "")
             parts.append(_t("prompt_cmd_post", default_tags=default_tags))
+            if settings.get("obs_host") and settings.get("obs_port"):
+                parts.append(_t("prompt_cmd_video"))
         return "".join(parts)
 
     def start(self, prompt_config, plugin_queue):
@@ -396,6 +415,13 @@ class XTwitterPlugin(BasePlugin):
                 self._post_tweet(text, image_mode="screen")
             else:
                 logger.warning(f"{_TAG} [CMD]X:post_screen テキストが空")
+        elif v_lower.startswith("post_video"):
+            text = value[10:].strip()
+            if text:
+                logger.info(f"{_TAG} [CMD]X:post_video → '{text[:50]}'")
+                threading.Thread(target=self._post_video_tweet, args=(text,), daemon=True).start()
+            else:
+                logger.warning(f"{_TAG} [CMD]X:post_video テキストが空")
         elif v_lower.startswith("post"):
             text = value[4:].strip()
             if text:
@@ -511,6 +537,132 @@ class XTwitterPlugin(BasePlugin):
                 _os.unlink(tmp_path)
         except Exception as e:
             logger.warning(f"{_TAG} 画像アップロードエラー: {e}")
+            return None
+
+    def _post_video_tweet(self, text: str):
+        """動画付きツイートを投稿（OBSリプレイバッファ → Xアップロード → ツイート）"""
+        if not self._api:
+            return
+
+        def _cue(msg):
+            if self.plugin_queue:
+                self.send_text(self.plugin_queue, msg)
+
+        _cue(_t("video_capturing"))
+
+        video_path = self._capture_replay_video()
+        if not video_path:
+            _cue(_t("video_fail_cue", err="リプレイバッファ保存失敗"))
+            return
+
+        _cue(_t("video_uploading"))
+
+        media_id = self._upload_video(video_path)
+        if not media_id:
+            _cue(_t("video_fail_cue", err="動画アップロード失敗"))
+            return
+
+        settings = self.get_settings()
+        default_tags = settings.get("default_hashtags", "").strip()
+        if default_tags:
+            text = f"{text} {default_tags}"
+        if settings.get("attach_stream_url", True):
+            stream_url = self.get_stream_url()
+            if stream_url:
+                text = f"{text}\n{stream_url}"
+        if len(text) > 280:
+            text = text[:277] + "..."
+
+        try:
+            client_v2 = tweepy.Client(
+                consumer_key=settings.get("api_key", ""),
+                consumer_secret=settings.get("api_secret", ""),
+                access_token=settings.get("access_token", ""),
+                access_token_secret=settings.get("access_secret", ""),
+            )
+            client_v2.create_tweet(text=text, media_ids=[media_id])
+            logger.info(f"{_TAG} 動画ツイート投稿成功: {text[:50]}")
+            _cue(_t("video_ok_cue", text=text[:50]))
+        except Exception as e:
+            logger.warning(f"{_TAG} 動画ツイート投稿エラー: {e}")
+            _cue(_t("video_fail_cue", err=str(e)[:60]))
+
+    def _capture_replay_video(self) -> str | None:
+        """OBSリプレイバッファを保存してファイルパスを返す。
+        EventClient で ReplayBufferSaved イベントを受け取りパスを自動取得。
+        """
+        try:
+            import obsws_python as obs
+
+            settings = self.get_settings()
+            host = settings.get("obs_host", "127.0.0.1")
+            port = int(settings.get("obs_port", 4455))
+            password = settings.get("obs_password", "")
+
+            saved_path: list[str | None] = [None]
+            path_event = threading.Event()
+
+            ev_client = obs.EventClient(host=host, port=port, password=password)
+
+            def on_replay_buffer_saved(data):
+                saved_path[0] = getattr(data, "saved_replay_path", None)
+                path_event.set()
+
+            ev_client.callback.register(on_replay_buffer_saved)
+
+            req_client = obs.ReqClient(host=host, port=port, password=password, timeout=5)
+            req_client.save_replay_buffer()
+            logger.info(f"{_TAG} SaveReplayBuffer 送信")
+
+            path_event.wait(timeout=15)
+            try:
+                ev_client.disconnect()
+            except Exception:
+                pass
+
+            if saved_path[0]:
+                logger.info(f"{_TAG} リプレイバッファ保存完了: {saved_path[0]}")
+                return saved_path[0]
+            else:
+                logger.warning(f"{_TAG} リプレイバッファ保存タイムアウト")
+                return None
+        except Exception as e:
+            logger.warning(f"{_TAG} _capture_replay_video エラー: {e}")
+            return None
+
+    def _upload_video(self, video_path: str) -> str | None:
+        """動画ファイルを v1.1 chunked media_upload でアップロードし media_id を返す。
+        アップロード後、Xサーバー側の処理完了をポーリングで待つ。
+        """
+        try:
+            import time as _time
+
+            media = self._api.media_upload(
+                filename=video_path,
+                media_category="tweet_video",
+                chunked=True,
+            )
+            media_id = media.media_id
+            logger.info(f"{_TAG} 動画アップロード開始: media_id={media_id}")
+
+            for _ in range(60):  # 最大120秒
+                status = self._api.get_media_upload_status(media_id)
+                info = getattr(status, "processing_info", None)
+                if info is None:
+                    break
+                state = info.get("state", "")
+                if state == "succeeded":
+                    logger.info(f"{_TAG} 動画処理完了: media_id={media_id}")
+                    break
+                elif state == "failed":
+                    err = info.get("error", {}).get("message", "unknown")
+                    logger.warning(f"{_TAG} 動画処理失敗: {err}")
+                    return None
+                _time.sleep(info.get("check_after_secs", 2))
+
+            return str(media_id)
+        except Exception as e:
+            logger.warning(f"{_TAG} _upload_video エラー: {e}")
             return None
 
     # ========================================
