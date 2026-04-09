@@ -203,12 +203,16 @@ class XTwitterPlugin(BasePlugin):
 
         self._api = None  # tweepy.API (v1.1)
         self._auth_user = None  # screen_name
-        self.is_connected = False
+        self._api_authenticated = False  # API認証済みフラグ（切断ボタン以外では維持）
+        self.is_connected = False  # コアUIバッジ用
 
         self._search_thread = None
         self._last_tweet_id = None
 
         self._panel = None
+
+        # 起動時に4キーが揃っていれば自動接続
+        self._try_auto_connect()
 
     def get_display_name(self):
         return _t("plugin_name")
@@ -255,7 +259,7 @@ class XTwitterPlugin(BasePlugin):
             me = self._api.verify_credentials()
             if me:
                 self._auth_user = me.screen_name
-                self.is_connected = True
+                self._api_authenticated = True
                 # 認証成功時に enabled も True にする
                 settings["enabled"] = True
                 self.save_settings(settings)
@@ -273,7 +277,7 @@ class XTwitterPlugin(BasePlugin):
     # ライフサイクル
     # ========================================
     def get_prompt_addon(self):
-        if not self.is_connected:
+        if not self._api_authenticated:
             return ""
         settings = self.get_settings()
         hashtag = settings.get("hashtag", "")
@@ -289,7 +293,7 @@ class XTwitterPlugin(BasePlugin):
         self._live_queue = plugin_queue
         self._live_prompt_config = prompt_config
 
-        if not self.is_connected or not self._api:
+        if not self._api_authenticated or not self._api:
             return
 
         self.cmt_msg = prompt_config.get("CMT_MSG", "")
@@ -561,7 +565,7 @@ class XTwitterPlugin(BasePlugin):
 
         btn_f = ttk.Frame(auth_f)
         btn_f.pack(fill=tk.X, pady=(4, 0))
-        if self.is_connected:
+        if self._api_authenticated:
             self._btn_connect = tk.Button(
                 btn_f, text=_t("btn_disconnect"), bg="#dc3545", fg="white",
                 font=("", 9, "bold"), command=self._on_disconnect,
@@ -573,8 +577,8 @@ class XTwitterPlugin(BasePlugin):
             )
         self._btn_connect.pack(side="left")
         self._lbl_auth_status = ttk.Label(
-            btn_f, text=_t("auth_ok", screen_name=self._auth_user) if self.is_connected else _t("auth_none"),
-            foreground="green" if self.is_connected else "gray", font=("", 8),
+            btn_f, text=_t("auth_ok", screen_name=self._auth_user) if self._api_authenticated else _t("auth_none"),
+            foreground="green" if self._api_authenticated else "gray", font=("", 8),
         )
         self._lbl_auth_status.pack(side="left", padx=(8, 0))
 
@@ -760,18 +764,40 @@ class XTwitterPlugin(BasePlugin):
 
         threading.Thread(target=_do, daemon=True).start()
 
+    def _try_auto_connect(self):
+        """起動時に4キーが揃っていれば自動で接続"""
+        if not _HAS_TWEEPY:
+            return
+        settings = self.get_settings()
+        keys = [settings.get(k, "") for k in ("api_key", "api_secret", "access_token", "access_secret")]
+        if all(keys):
+            if self._build_client():
+                self._api_authenticated = True
+                self._update_badge_from_settings()
+                logger.info(f"{_TAG} 起動時自動接続成功: @{self._auth_user}")
+
     def _update_badge(self):
-        """コアUIのバッジ表示を更新: 接続中 AND (取得 or 投稿) でアクティブ"""
-        if self._api:
+        """コアUIのバッジ表示を更新: 認証済 AND (取得チェック or 投稿チェック) でアクティブ"""
+        if self._api_authenticated:
             fetch = self._var_fetch.get() if hasattr(self, '_var_fetch') else False
             post = self._var_ai_post.get() if hasattr(self, '_var_ai_post') else False
             self.is_connected = fetch or post
         else:
             self.is_connected = False
 
+    def _update_badge_from_settings(self):
+        """UIが開いていない時（起動時等）に設定JSONからバッジを更新"""
+        if self._api_authenticated:
+            settings = self.get_settings()
+            fetch = settings.get("fetch_hashtag", True)
+            post = settings.get("ai_post", True)
+            self.is_connected = fetch or post
+        else:
+            self.is_connected = False
+
     def _update_feature_state(self):
         """認証状態に応じて機能セクションを有効/無効切替（再帰的に全子ウィジェット）"""
-        enabled = self.is_connected
+        enabled = self._api_authenticated
         for frame in [self._hash_f, self._post_f, self._obs_f]:
             if hasattr(self, '_panel') and frame.winfo_exists():
                 self._set_widget_state_recursive(frame, enabled)
@@ -798,6 +824,7 @@ class XTwitterPlugin(BasePlugin):
         """切断"""
         self._api = None
         self._auth_user = None
+        self._api_authenticated = False
         self.is_connected = False
         settings = self.get_settings()
         settings["enabled"] = False
