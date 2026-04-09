@@ -770,18 +770,29 @@ class XTwitterPlugin(BasePlugin):
             self.is_connected = False
 
     def _update_feature_state(self):
-        """認証状態に応じて機能セクションを有効/無効切替"""
-        state = "!disabled" if self.is_connected else "disabled"
+        """認証状態に応じて機能セクションを有効/無効切替（再帰的に全子ウィジェット）"""
+        enabled = self.is_connected
         for frame in [self._hash_f, self._post_f, self._obs_f]:
             if hasattr(self, '_panel') and frame.winfo_exists():
-                for child in frame.winfo_children():
-                    try:
-                        child.state([state])
-                    except (AttributeError, tk.TclError):
-                        try:
-                            child.config(state="normal" if self.is_connected else "disabled")
-                        except (AttributeError, tk.TclError):
-                            pass
+                self._set_widget_state_recursive(frame, enabled)
+
+    @staticmethod
+    def _set_widget_state_recursive(widget, enabled):
+        """ウィジェットとその全子要素の状態を再帰的に設定"""
+        for child in widget.winfo_children():
+            # 再帰
+            XTwitterPlugin._set_widget_state_recursive(child, enabled)
+            # ttk系
+            try:
+                child.state(["!disabled"] if enabled else ["disabled"])
+                continue
+            except (AttributeError, tk.TclError):
+                pass
+            # tk系
+            try:
+                child.config(state="normal" if enabled else "disabled")
+            except (AttributeError, tk.TclError):
+                pass
 
     def _on_disconnect(self):
         """切断"""
