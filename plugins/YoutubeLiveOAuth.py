@@ -1002,7 +1002,26 @@ class YoutubeLiveOAuth(BasePlugin):
 
         # 既に接続済みならUI復元
         if self.is_connected and self.video_id:
-            self._update_ui_connected()
+            # 配信情報を復元
+            if hasattr(self, 'lbl_title') and self.yt_title:
+                self.lbl_title.config(text=self.yt_title)
+            if hasattr(self, 'lbl_desc') and self.yt_desc:
+                self.lbl_desc.config(text=self.yt_desc[:200])
+            # サムネイル復元
+            if hasattr(self, 'lbl_preview') and getattr(self, 'thumbnail_bytes', None):
+                try:
+                    import io
+                    from PIL import Image, ImageTk
+                    img = Image.open(io.BytesIO(self.thumbnail_bytes))
+                    img.thumbnail((300, 300))
+                    self._preview_photo_ref = ImageTk.PhotoImage(img)
+                    self.lbl_preview.config(image=self._preview_photo_ref, text="")
+                except Exception:
+                    pass
+            # 認証情報を復元
+            if hasattr(self, 'lbl_auth_status'):
+                self.lbl_auth_status.config(text=_t("auth_ok"), foreground="green")
+            # ボタンを切断に切替
             self.btn_connect.pack_forget()
             self.btn_disconnect.pack(side="left")
 
