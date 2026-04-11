@@ -69,8 +69,11 @@ _L = {
         "lbl_obs_host": "OBS WebSocket Host:",
         "lbl_obs_port": "Port:",
         "lbl_obs_password": "Password:",
-        "lbl_obs_source": "キャプチャソース名:",
-        "btn_obs_test": "📸 テストキャプチャ",
+        "btn_obs_connect": "接続",
+        "btn_obs_connecting": "接続中...",
+        "obs_conn_ok": "✅ 接続成功",
+        "obs_conn_fail": "❌ 接続できません",
+        "lbl_obs_source": "対象シーン:",
         "obs_test_ok": "✅ キャプチャ成功",
         "obs_test_fail": "❌ キャプチャ失敗: {err}",
         # ボタン
@@ -146,8 +149,11 @@ _L = {
         "lbl_obs_host": "OBS WebSocket Host:",
         "lbl_obs_port": "Port:",
         "lbl_obs_password": "Password:",
-        "lbl_obs_source": "Capture source name:",
-        "btn_obs_test": "📸 Test Capture",
+        "btn_obs_connect": "Connect",
+        "btn_obs_connecting": "Connecting...",
+        "obs_conn_ok": "✅ Connected",
+        "obs_conn_fail": "❌ Cannot connect",
+        "lbl_obs_source": "Scene:",
         "obs_test_ok": "✅ Capture OK",
         "obs_test_fail": "❌ Capture failed: {err}",
         "btn_close": "Close",
@@ -806,25 +812,28 @@ class XTwitterPlugin(BasePlugin):
         self._ent_obs_port.pack(side="left")
         self._ent_obs_port.insert(0, str(settings.get("obs_port", 4455)))
 
-        ttk.Label(obs_left, text=_t("lbl_obs_password"), font=("", 8)).pack(anchor="w", pady=(2, 0))
-        self._ent_obs_password = ttk.Entry(obs_left, font=("", 9), show="*")
-        self._ent_obs_password.pack(fill=tk.X, pady=(0, 2))
+        pass_f = ttk.Frame(obs_left)
+        pass_f.pack(fill=tk.X, pady=(2, 0))
+        ttk.Label(pass_f, text=_t("lbl_obs_password"), font=("", 8)).pack(side="left")
+        self._ent_obs_password = ttk.Entry(pass_f, font=("", 9), show="*", width=12)
+        self._ent_obs_password.pack(side="left", padx=(4, 4))
         self._ent_obs_password.insert(0, settings.get("obs_password", ""))
+        self._btn_obs_connect = tk.Button(
+            pass_f, text=_t("btn_obs_connect"), bg="#007bff", fg="white",
+            font=("", 7, "bold"), command=self._on_obs_connect,
+        )
+        self._btn_obs_connect.pack(side="left")
+
+        self._lbl_obs_conn = ttk.Label(obs_left, text="", font=("", 7))
+        self._lbl_obs_conn.pack(anchor="w", pady=(2, 0))
 
         ttk.Label(obs_left, text=_t("lbl_obs_source"), font=("", 8)).pack(anchor="w", pady=(2, 0))
         self._combo_obs_source = ttk.Combobox(obs_left, font=("", 9), state="readonly")
         self._combo_obs_source.pack(fill=tk.X, pady=(0, 4))
         self._combo_obs_source.set(settings.get("obs_source", ""))
-        self._combo_obs_source.bind("<Button-1>", lambda e: self._fetch_obs_scenes())
 
-        obs_btn_f = ttk.Frame(obs_left)
-        obs_btn_f.pack(fill=tk.X)
-        tk.Button(
-            obs_btn_f, text=_t("btn_obs_test"), font=("", 8),
-            bg="#17a2b8", fg="white", command=self._on_obs_test,
-        ).pack(side="left")
-        self._lbl_obs_status = ttk.Label(obs_btn_f, text="", font=("", 7))
-        self._lbl_obs_status.pack(side="left", padx=(6, 0))
+        self._lbl_obs_status = ttk.Label(obs_left, text="", font=("", 7))
+        self._lbl_obs_status.pack(anchor="w")
 
         # 右カラム: プレビュー画像（16:9）
         obs_right = ttk.Frame(obs_cols, width=192, height=108)
@@ -835,8 +844,8 @@ class XTwitterPlugin(BasePlugin):
         self._lbl_obs_preview.pack(fill=tk.BOTH, expand=True)
         self._obs_preview_photo = None
 
-        # 起動時にシーン一覧を取得
-        self._fetch_obs_scenes()
+        # 起動時にOBS接続を試行
+        self._on_obs_connect()
 
         # --- 閉じるボタン ---
         tk.Button(
@@ -848,9 +857,16 @@ class XTwitterPlugin(BasePlugin):
         # 認証状態に応じて機能セクションをグレーアウト
         self._update_feature_state()
 
-    def _fetch_obs_scenes(self):
-        """OBSからシーン一覧を取得してコンボボックスに設定"""
+    def _on_obs_connect(self):
+        """OBS WebSocket 接続試行→シーン一覧取得→テストキャプチャ"""
+        if hasattr(self, '_btn_obs_connect'):
+            self._btn_obs_connect.config(state="disabled", text=_t("btn_obs_connecting"))
+        if hasattr(self, '_lbl_obs_conn'):
+            self._lbl_obs_conn.config(text="", foreground="gray")
+
         def _do():
+            connected = False
+            scene_names = []
             try:
                 import obsws_python as obs_ws
                 host = self._ent_obs_host.get().strip()
@@ -858,17 +874,43 @@ class XTwitterPlugin(BasePlugin):
                 password = self._ent_obs_password.get().strip()
                 cl = obs_ws.ReqClient(host=host, port=port, password=password, timeout=3)
                 scenes = cl.get_scene_list()
-                scene_names = []
                 if scenes and hasattr(scenes, 'scenes'):
                     for scene in scenes.scenes:
                         name = scene.get("sceneName", "") if isinstance(scene, dict) else getattr(scene, "sceneName", "")
                         if name:
                             scene_names.append(name)
-                if scene_names and self._panel and self._panel.winfo_exists():
-                    self._panel.after(0, lambda names=scene_names: self._combo_obs_source.config(values=names))
-            except Exception:
-                pass
+                connected = True
+            except Exception as e:
+                logger.debug(f"{_TAG} OBS接続失敗: {e}")
+
+            if self._panel and self._panel.winfo_exists():
+                self._panel.after(0, lambda: self._on_obs_connect_result(connected, scene_names))
+
         threading.Thread(target=_do, daemon=True).start()
+
+    def _on_obs_connect_result(self, connected, scene_names):
+        """OBS接続結果をUIに反映"""
+        if hasattr(self, '_btn_obs_connect'):
+            self._btn_obs_connect.config(state="normal", text=_t("btn_obs_connect"))
+
+        if connected:
+            if hasattr(self, '_lbl_obs_conn'):
+                self._lbl_obs_conn.config(text=_t("obs_conn_ok"), foreground="green")
+            if scene_names:
+                self._combo_obs_source.config(values=scene_names)
+                current = self._combo_obs_source.get()
+                if not current or current not in scene_names:
+                    self._combo_obs_source.set(scene_names[0])
+                self._on_obs_test()
+        else:
+            if hasattr(self, '_lbl_obs_conn'):
+                self._lbl_obs_conn.config(text=_t("obs_conn_fail"), foreground="red")
+            self._combo_obs_source.config(values=[])
+            self._combo_obs_source.set("")
+            if hasattr(self, '_lbl_obs_preview'):
+                self._lbl_obs_preview.config(image="", text=_t("obs_conn_fail"))
+            if hasattr(self, '_lbl_obs_status'):
+                self._lbl_obs_status.config(text="")
 
     def _on_obs_test(self):
         """OBSキャプチャのテスト — プレビュー画像を表示"""
