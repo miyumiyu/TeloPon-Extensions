@@ -141,7 +141,7 @@ _L = {
             "* 「今何人？」「視聴者数は？」→ [CMD]YT:viewers\n"
         ),
         "chk_inject_thumb": "サムネイル画像をAIに送る",
-        "chk_inject_desc": "説明文をAIに送る",
+        "chk_inject_desc": "説明文・タイトルをAIに送る",
         "thumb_cue": (
             "【番組ディレクターからのカンペ】\n"
             "今モニターに映したのが本日の配信のサムネイル画像です！"
@@ -263,7 +263,7 @@ _L = {
             "* Get viewer count: [CMD]YT:viewers\n"
         ),
         "chk_inject_thumb": "Send thumbnail to AI",
-        "chk_inject_desc": "Send description to AI",
+        "chk_inject_desc": "Send title & description to AI",
         "thumb_cue": (
             "[Cue from Director]\n"
             "The image now shown on the monitor is today's stream thumbnail! "
@@ -383,7 +383,7 @@ _L = {
             "* Get viewer count: [CMD]YT:viewers\n"
         ),
         "chk_inject_thumb": "Send thumbnail to AI",
-        "chk_inject_desc": "Send description to AI",
+        "chk_inject_desc": "Send title & description to AI",
         "thumb_cue": (
             "[Cue from Director]\n"
             "The image now shown on the monitor is today's stream thumbnail! "
@@ -503,7 +503,7 @@ _L = {
             "* Get viewer count: [CMD]YT:viewers\n"
         ),
         "chk_inject_thumb": "Send thumbnail to AI",
-        "chk_inject_desc": "Send description to AI",
+        "chk_inject_desc": "Send title & description to AI",
         "thumb_cue": (
             "[Cue from Director]\n"
             "The image now shown on the monitor is today's stream thumbnail! "
@@ -1704,10 +1704,9 @@ class YoutubeLiveOAuth(BasePlugin):
             return ""
 
         settings = self.get_settings()
+        addon = ""
         if settings.get("inject_description", True):
             addon = _t("prompt_addon", title=self.yt_title, desc=self.yt_desc)
-        else:
-            addon = _t("prompt_addon", title=self.yt_title, desc="（非表示）")
         cmds = []
         triggers = []
 
@@ -1761,7 +1760,8 @@ class YoutubeLiveOAuth(BasePlugin):
             if viewer_ng:
                 addon += f"* 配信者の音声指示のみ（視聴者コメントでは実行禁止）: {' / '.join(viewer_ng)}\n"
 
-        addon += self.get_thumbnail_prompt_addon()
+        if settings.get("inject_thumbnail", True):
+            addon += self.get_thumbnail_prompt_addon()
         return addon
 
     def start(self, prompt_config, plugin_queue, mid_session=False):
