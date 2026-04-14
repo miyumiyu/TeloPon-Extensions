@@ -29,7 +29,7 @@ import logger
 _L = {
     "ja": {
         "plugin_name": "📺 YouTube Live+",
-        "window_title": "YouTube OAuth連携 設定",
+        "window_title": "⚙️ YouTube Live+ 設定",
         "import_error_title": "ライブラリ不足",
         "import_error_msg": (
             "必要なライブラリがインストールされていません。\n"
@@ -174,7 +174,7 @@ _L = {
     },
     "en": {
         "plugin_name": "📺 YouTube Live+",
-        "window_title": "YouTube OAuth Settings",
+        "window_title": "⚙️ YouTube Live+ Settings",
         "import_error_title": "Missing Libraries",
         "import_error_msg": (
             "Required libraries are not installed.\n"
@@ -296,7 +296,7 @@ _L = {
     },
     "ko": {
         "plugin_name": "📺 YouTube Live+",
-        "window_title": "YouTube OAuth 설정",
+        "window_title": "⚙️ YouTube Live+ 설정",
         "import_error_title": "라이브러리 부족",
         "import_error_msg": (
             "필요한 라이브러리가 설치되지 않았습니다.\n"
@@ -416,7 +416,7 @@ _L = {
     },
     "ru": {
         "plugin_name": "📺 YouTube Live+",
-        "window_title": "Настройки YouTube OAuth",
+        "window_title": "⚙️ YouTube Live+ Настройки",
         "import_error_title": "Отсутствуют библиотеки",
         "import_error_msg": (
             "Необходимые библиотеки не установлены.\n"
