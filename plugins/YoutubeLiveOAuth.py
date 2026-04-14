@@ -140,6 +140,8 @@ _L = {
             "* 「○○ってコメントして」→ [CMD]YT:comment ○○\n"
             "* 「今何人？」「視聴者数は？」→ [CMD]YT:viewers\n"
         ),
+        "chk_inject_thumb": "サムネイル画像をAIに送る",
+        "chk_inject_desc": "説明文をAIに送る",
         "thumb_cue": (
             "【番組ディレクターからのカンペ】\n"
             "今モニターに映したのが本日の配信のサムネイル画像です！"
@@ -260,6 +262,8 @@ _L = {
             "* Write comment: [CMD]YT:comment Your comment here\n"
             "* Get viewer count: [CMD]YT:viewers\n"
         ),
+        "chk_inject_thumb": "Send thumbnail to AI",
+        "chk_inject_desc": "Send description to AI",
         "thumb_cue": (
             "[Cue from Director]\n"
             "The image now shown on the monitor is today's stream thumbnail! "
@@ -378,6 +382,8 @@ _L = {
             "* Write comment: [CMD]YT:comment Your comment here\n"
             "* Get viewer count: [CMD]YT:viewers\n"
         ),
+        "chk_inject_thumb": "Send thumbnail to AI",
+        "chk_inject_desc": "Send description to AI",
         "thumb_cue": (
             "[Cue from Director]\n"
             "The image now shown on the monitor is today's stream thumbnail! "
@@ -496,6 +502,8 @@ _L = {
             "* Write comment: [CMD]YT:comment Your comment here\n"
             "* Get viewer count: [CMD]YT:viewers\n"
         ),
+        "chk_inject_thumb": "Send thumbnail to AI",
+        "chk_inject_desc": "Send description to AI",
         "thumb_cue": (
             "[Cue from Director]\n"
             "The image now shown on the monitor is today's stream thumbnail! "
@@ -569,7 +577,7 @@ _TOKEN_PATH = os.path.join("plugins", "youtube_oauth_token.json")
 
 class YoutubeLiveOAuth(BasePlugin):
     PLUGIN_ID = "youtube_live_oauth"
-    PLUGIN_NAME = "YouTube OAuth連携"
+    PLUGIN_NAME = "YouTube Live+"
     PLUGIN_VERSION = "1.01"
     PLUGIN_TYPE = "TOOL"
 
@@ -627,6 +635,8 @@ class YoutubeLiveOAuth(BasePlugin):
             "saved_url": "",
             "client_id": "",
             "client_secret": "",
+            "inject_thumbnail": True,
+            "inject_description": True,
             "fetch_comments": True,
             "ai_comment": True,
             "ai_poll": True,
@@ -961,6 +971,14 @@ class YoutubeLiveOAuth(BasePlugin):
         self.lbl_permission = ttk.Label(info_f, text="", foreground="gray")
         self.lbl_permission.pack(anchor="w", pady=(3, 0))
 
+        # --- AI注入設定 ---
+        inject_f = ttk.Frame(info_f)
+        inject_f.pack(fill=tk.X, pady=(4, 0))
+        self._var_inject_thumb = tk.BooleanVar(value=settings.get("inject_thumbnail", True))
+        ttk.Checkbutton(inject_f, text=_t("chk_inject_thumb"), variable=self._var_inject_thumb).pack(side="left", padx=(0, 12))
+        self._var_inject_desc = tk.BooleanVar(value=settings.get("inject_description", True))
+        ttk.Checkbutton(inject_f, text=_t("chk_inject_desc"), variable=self._var_inject_desc).pack(side="left")
+
         # 機能設定（グリッド: 機能 | 視聴者可）
         feat_f = ttk.LabelFrame(right_f, text=_t("section_features"), padding=8)
         feat_f.pack(fill=tk.X, pady=(0, 8))
@@ -1038,6 +1056,10 @@ class YoutubeLiveOAuth(BasePlugin):
         settings = self.get_settings()
         settings["client_id"] = self.ent_client_id.get().strip()
         settings["client_secret"] = self.ent_client_secret.get().strip()
+        if hasattr(self, '_var_inject_thumb'):
+            settings["inject_thumbnail"] = self._var_inject_thumb.get()
+        if hasattr(self, '_var_inject_desc'):
+            settings["inject_description"] = self._var_inject_desc.get()
         settings["fetch_comments"] = self.var_fetch_comments.get()
         settings["ai_comment"] = self.var_ai_comment.get()
         settings["ai_poll"] = self.var_ai_poll.get()
@@ -1681,10 +1703,11 @@ class YoutubeLiveOAuth(BasePlugin):
         if not self.is_connected or not self.video_id:
             return ""
 
-        addon = _t("prompt_addon", title=self.yt_title, desc=self.yt_desc)
-
-        # 各機能のチェック状態に応じて個別にプロンプトを組み立て
         settings = self.get_settings()
+        if settings.get("inject_description", True):
+            addon = _t("prompt_addon", title=self.yt_title, desc=self.yt_desc)
+        else:
+            addon = _t("prompt_addon", title=self.yt_title, desc="（非表示）")
         cmds = []
         triggers = []
 
@@ -1759,7 +1782,7 @@ class YoutubeLiveOAuth(BasePlugin):
             self.panel.after(0, lambda: self._set_features_locked(True))
 
         # サムネイル注入
-        if self.thumbnail_bytes:
+        if self.thumbnail_bytes and self.get_settings().get("inject_thumbnail", True):
             self.thumb_thread = threading.Timer(5.0, self._inject_thumbnail)
             self.thumb_thread.daemon = True
             self.thumb_thread.start()
