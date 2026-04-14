@@ -212,7 +212,7 @@ _TOKEN_FILE = os.path.join("plugins", "twitter_x_token.json")
 class XTwitterPlugin(BasePlugin):
     PLUGIN_ID = "twitter_x"
     PLUGIN_NAME = "X (Twitter) Integration"
-    PLUGIN_VERSION = "1.10"
+    PLUGIN_VERSION = "1.11"
     PLUGIN_TYPE = "TOOL"
 
     IDENTIFIER = "X"  # [CMD]X:post
