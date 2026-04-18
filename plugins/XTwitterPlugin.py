@@ -314,7 +314,7 @@ class XTwitterPlugin(BasePlugin):
                 parts.append(_t("prompt_cmd_video"))
         return "".join(parts)
 
-    def start(self, prompt_config, plugin_queue):
+    def start(self, prompt_config, plugin_queue, mid_session=False):
         self._live_queue = plugin_queue
         self._live_prompt_config = prompt_config
 
@@ -327,8 +327,16 @@ class XTwitterPlugin(BasePlugin):
 
         settings = self.get_settings()
         if settings.get("fetch_hashtag", True) and settings.get("hashtag", ""):
-            self._search_thread = threading.Thread(target=self._search_loop, daemon=True)
-            self._search_thread.start()
+            if self._search_thread is None or not self._search_thread.is_alive():
+                self._search_thread = threading.Thread(target=self._search_loop, daemon=True)
+                self._search_thread.start()
+
+        # ライブ中の後接続: プロンプトをメッセージとして注入
+        if mid_session:
+            prompt = self.get_prompt_addon()
+            if prompt and self.plugin_queue:
+                self.send_text(self.plugin_queue, prompt)
+                logger.info(f"{_TAG} ライブ中後接続: プロンプトをメッセージ注入")
 
         logger.info(f"{_TAG} ▶️ ライブ連携開始")
 
@@ -1059,6 +1067,11 @@ class XTwitterPlugin(BasePlugin):
         )
         self._update_feature_state()
         self._update_badge()
+
+        # ライブ中に後接続した場合: start() を呼んで検索スレッド起動 + プロンプト注入
+        if self._live_queue is not None and self._live_prompt_config is not None:
+            logger.info(f"{_TAG} ライブ中に後接続を検知 → start(mid_session=True)")
+            self.start(self._live_prompt_config, self._live_queue, mid_session=True)
 
     def _on_connect_fail(self):
         self._btn_connect.config(
