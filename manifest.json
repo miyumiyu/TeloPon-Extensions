@@ -101,6 +101,20 @@
       "bundled_deps": true
     },
     {
+      "plugin_id": "gemini_tts",
+      "name": "🔊 テロップ読み上げ (Gemini TTS)",
+      "name_en": "🔊 Telop TTS (Gemini TTS)",
+      "name_ko": "🔊 텔롭 읽기 (Gemini TTS)",
+      "name_ru": "🔊 Озвучка телопов (Gemini TTS)",
+      "version": "1.00",
+      "description": "Gemini 3.1 Flash TTSでテロップを高品質読み上げ。30種類のボイス、感情・キャラ指示対応。TeloPon本体のAPIキーを使用。",
+      "description_en": "High-quality telop TTS using Gemini 3.1 Flash TTS. 30 voices, emotion/character instructions. Uses TeloPon's API key.",
+      "type": "TOOL",
+      "files": ["GeminiTTS.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/GeminiTTS.py",
+      "bundled_deps": true
+    },
+    {
       "plugin_id": "powerpoint_ctrl",
       "name": "📊 PowerPoint操作",
       "name_en": "📊 PowerPoint Control",
