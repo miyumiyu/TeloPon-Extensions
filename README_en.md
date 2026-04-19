@@ -26,7 +26,7 @@ Copy the files you want to use into the corresponding TeloPon folder.
 
 | | Plugin | Ver | Description | DL |
 |---|---|---|---|---|
-| 📺 | [YouTube Live+](docs/en/YoutubeLiveOAuth.md) | 1.02 | YouTube OAuth. Comment read/write, polls, title change, viewer count.<br>👉 [Details](docs/en/YoutubeLiveOAuth.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py) |
+| 📺 | [YouTube Live+](docs/en/YoutubeLiveOAuth.md) | 1.03 | YouTube OAuth. Comment read/write, polls, title change, viewer count.<br>👉 [Details](docs/en/YoutubeLiveOAuth.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/YoutubeLiveOAuth.py) |
 | 📺 | [Niconico Live](docs/en/NiconicoLivePlugin.md) | 1.00 | Niconico live comments, gifts, ads, polls & stats in real-time. Operator comments supported.<br>👉 [Details](docs/en/NiconicoLivePlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/NiconicoLivePlugin.py) |
 | 🐦 | [X (Twitter)](docs/en/XTwitterPlugin.md) | 1.11 | Hashtag fetch, tweet with text/thumbnail/screen capture. Paid API (Pay Per Use).<br>👉 [Details](docs/en/XTwitterPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py) |
 | 🔊 | [Telop TTS (Windows)](docs/en/WindowsTTS.md) | 1.00 | Auto text-to-speech with Windows SAPI5.<br>👉 [Details](docs/en/WindowsTTS.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/WindowsTTS.py) |

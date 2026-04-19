@@ -7,7 +7,7 @@
       "name_en": "📺 YouTube Live+",
       "name_ko": "📺 YouTube Live+",
       "name_ru": "📺 YouTube Live+",
-      "version": "1.02",
+      "version": "1.03",
       "description": "YouTube OAuth連携。コメント読み書き・アンケート・タイトル変更・視聴者数取得。",
       "description_en": "YouTube OAuth. Comment read/write, polls, title change, viewer count.",
       "type": "TOOL",
