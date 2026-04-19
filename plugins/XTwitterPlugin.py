@@ -461,10 +461,11 @@ class XTwitterPlugin(BasePlugin):
             text = f"{text} {default_tags}"
 
         # 配信URL付与
-        if settings.get("attach_stream_url", True):
-            stream_url = self.get_stream_url()
-            if stream_url:
-                text = f"{text}\n{stream_url}"
+        attach_url = settings.get("attach_stream_url", True)
+        stream_url = self.get_stream_url()
+        logger.debug(f"{_TAG} URL付与判定: attach_stream_url={attach_url}, get_stream_url()='{stream_url}'")
+        if attach_url and stream_url:
+            text = f"{text}\n{stream_url}"
 
         # 280文字制限
         if len(text) > 280:
@@ -580,10 +581,11 @@ class XTwitterPlugin(BasePlugin):
         default_tags = settings.get("default_hashtags", "").strip()
         if default_tags:
             text = f"{text} {default_tags}"
-        if settings.get("attach_stream_url", True):
-            stream_url = self.get_stream_url()
-            if stream_url:
-                text = f"{text}\n{stream_url}"
+        attach_url = settings.get("attach_stream_url", True)
+        stream_url = self.get_stream_url()
+        logger.debug(f"{_TAG} [video] URL付与判定: attach_stream_url={attach_url}, get_stream_url()='{stream_url}'")
+        if attach_url and stream_url:
+            text = f"{text}\n{stream_url}"
         if len(text) > 280:
             text = text[:277] + "..."
 

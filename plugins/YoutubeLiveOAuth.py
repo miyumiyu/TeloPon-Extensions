@@ -1609,11 +1609,12 @@ class YoutubeLiveOAuth(BasePlugin):
             self._update_enabled_state(True)
 
             # 配信情報をコア共有機構にセット
-            yt_url = f"https://www.youtube.com/watch?v={self._broadcast_id}" if hasattr(self, '_broadcast_id') and self._broadcast_id else ""
+            yt_url = f"https://www.youtube.com/watch?v={self.video_id}" if self.video_id else ""
             self.set_stream_info(
                 url=yt_url, thumbnail=getattr(self, 'thumbnail_bytes', None),
                 title=self.yt_title, platform="YouTube OAuth",
             )
+            logger.info(f"[{self.PLUGIN_NAME}] 配信URLをコア共有: {yt_url}")
 
             if hasattr(self, 'panel') and self.panel.winfo_exists():
                 self.panel.after(0, self._update_ui_connected)
