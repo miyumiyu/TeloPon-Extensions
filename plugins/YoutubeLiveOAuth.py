@@ -578,7 +578,7 @@ _TOKEN_PATH = os.path.join("plugins", "youtube_oauth_token.json")
 class YoutubeLiveOAuth(BasePlugin):
     PLUGIN_ID = "youtube_live_oauth"
     PLUGIN_NAME = "YouTube Live+"
-    PLUGIN_VERSION = "1.03"
+    PLUGIN_VERSION = "1.04"
     PLUGIN_TYPE = "TOOL"
 
     # CMD ハイブリッド: [CMD]YT:xxx
@@ -1308,7 +1308,9 @@ class YoutubeLiveOAuth(BasePlugin):
         self.lbl_title.config(text=_t("lbl_title", title=b["title"]))
         desc = b["description"]
         self.lbl_desc.config(text=_t("lbl_desc", desc=desc) if desc else _t("lbl_desc_empty"))
-        self.btn_connect.config(state="normal")
+        # ライブ中は接続ボタンを有効化しない（別配信への切替は禁止）
+        if not self.is_running:
+            self.btn_connect.config(state="normal")
 
         thumb_url = b.get("thumb_url")
         if thumb_url:
@@ -1641,10 +1643,12 @@ class YoutubeLiveOAuth(BasePlugin):
             self.btn_connect.pack_forget()
         if hasattr(self, 'btn_disconnect'):
             self.btn_disconnect.pack(side="left")
+        # ライブ中も配信一覧と再取得は有効化（情報確認用）。
+        # ただし URL チェックと URL 入力は接続中に変更されると不整合のため無効。
         if hasattr(self, 'lst_broadcasts'):
-            self.lst_broadcasts.config(state="disabled")
+            self.lst_broadcasts.config(state="normal")
         if hasattr(self, 'btn_fetch_list'):
-            self.btn_fetch_list.config(state="disabled")
+            self.btn_fetch_list.config(state="normal")
         if hasattr(self, 'btn_url_check'):
             self.btn_url_check.config(state="disabled")
         if hasattr(self, 'ent_url'):
