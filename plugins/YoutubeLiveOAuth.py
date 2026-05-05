@@ -2091,6 +2091,19 @@ class YoutubeLiveOAuth(BasePlugin):
         question = segments[0]
         options = segments[1:]
 
+        # 既存のアクティブアンケートがあれば自動で締切（YouTube API は1チャットに1ポーリングのみ）
+        if self._active_poll_id:
+            logger.info(f"[{self.PLUGIN_NAME}] 新規作成のため既存アンケートを自動締切します")
+            try:
+                yt_service.liveChatMessages().transition(
+                    id=self._active_poll_id,
+                    status="closed",
+                ).execute()
+            except Exception as e:
+                logger.debug(f"[{self.PLUGIN_NAME}] 既存アンケートの締切に失敗（既に閉じている可能性）: {e}")
+            self._active_poll_id = None
+            self._active_poll_question = None
+
         try:
             resp = yt_service.liveChatMessages().insert(
                 part="snippet",
