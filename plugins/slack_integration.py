@@ -469,6 +469,10 @@ class SlackIntegrationPlugin(BasePlugin):
                             # AIに送るテキストを組み立てる
                             final_text = f"[COMMENT] {user_name}: {text}\n\n{prompt_prefix}"
 
+                            # 全プラグインにコメント通知
+                            try: BasePlugin.broadcast_comment(text, user_name, "slack")
+                            except Exception: pass
+
                             if self.plugin_queue:
                                 self.send_text(self.plugin_queue, final_text)
                                 logger.info(f"[{self.PLUGIN_NAME}] ⚡ リアルタイム受信: {user_name}のコメントをAIに即時送信しました！")

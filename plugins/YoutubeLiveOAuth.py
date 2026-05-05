@@ -1877,6 +1877,9 @@ class YoutubeLiveOAuth(BasePlugin):
                                 text = text[:100] + "..."
                             name = author.get("displayName", "unknown")
                             comments.append(f"[COMMENT] {name}: {text}")
+                            # 全プラグインにコメント通知
+                            try: BasePlugin.broadcast_comment(text, name, "youtube")
+                            except Exception: pass
 
                             avatar_url = author.get("profileImageUrl", "")
                             if avatar_url:

@@ -479,6 +479,10 @@ class DiscordRealtimePlugin(BasePlugin):
 
             final_text = f"[COMMENT] {display_name}: {content}\n\n{prompt_prefix}"
 
+            # 全プラグインにコメント通知
+            try: BasePlugin.broadcast_comment(content, display_name, "discord")
+            except Exception: pass
+
             if self.plugin_queue:
                 self.send_text(self.plugin_queue, final_text)
                 logger.info(f"[{self.PLUGIN_NAME}] ⚡ リアルタイム受信: {message.author.display_name}のコメントをAIに即時送信しました！")

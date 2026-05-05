@@ -115,6 +115,20 @@
       "bundled_deps": true
     },
     {
+      "plugin_id": "first_timer_counter",
+      "name": "✨ 初見さんカウンター",
+      "name_en": "✨ First-Timer Counter",
+      "name_ko": "✨ 첫 방문자 카운터",
+      "name_ru": "✨ Счётчик новичков",
+      "version": "1.00",
+      "description": "コメントから「初見」「おはつ」等のキーワードを検出して初見視聴者数をステータスウィンドウに常時表示。",
+      "description_en": "Detects keywords like 'first time' in comments and displays count in the status window.",
+      "type": "TOOL",
+      "files": ["FirstTimerCounter.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/FirstTimerCounter.py",
+      "bundled_deps": true
+    },
+    {
       "plugin_id": "powerpoint_ctrl",
       "name": "📊 PowerPoint操作",
       "name_en": "📊 PowerPoint Control",
