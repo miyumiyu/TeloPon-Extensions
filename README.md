@@ -42,6 +42,7 @@ TeloPon 内の **「🔧 プラグイン管理」** →「ダウンロード可�
 | 💬 | [Discord](docs/ja/discord_integration.md) | 1.00 | Discordチャンネルのコメントをリアルタイム取得。<br>👉 [詳細はこちら](docs/ja/discord_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
 | 💬 | [Slack](docs/ja/slack_integration.md) | 1.00 | Slackチャンネルのコメントをリアルタイム取得。<br>👉 [詳細はこちら](docs/ja/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🎮 | [VCI テロップ送信](docs/ja/VciOscPlugin.md) | 1.01 | VirtualCast VCI へOSCでテロップ送信。<br>👉 [詳細はこちら](docs/ja/VciOscPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
+| ✨ | [初見さんカウンター](docs/ja/FirstTimerCounter.md) | 1.00 | コメントから「初見」「おはつ」等のキーワードを検出して累計人数を `window-status` に常時表示。<br>👉 [詳細はこちら](docs/ja/FirstTimerCounter.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/FirstTimerCounter.py) |
 
 ---
 

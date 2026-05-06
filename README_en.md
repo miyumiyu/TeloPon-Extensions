@@ -36,6 +36,7 @@ Copy the files you want to use into the corresponding TeloPon folder.
 | 💬 | [Discord](docs/en/discord_integration.md) | 1.00 | Real-time Discord channel comments.<br>👉 [Details](docs/en/discord_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
 | 💬 | [Slack](docs/en/slack_integration.md) | 1.00 | Real-time Slack channel comments.<br>👉 [Details](docs/en/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🎮 | [VCI Telop Sender](docs/en/VciOscPlugin.md) | 1.01 | Send telops to VirtualCast VCI via OSC.<br>👉 [Details](docs/en/VciOscPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
+| ✨ | [First-Timer Counter](docs/en/FirstTimerCounter.md) | 1.00 | Detect "first time" / "hello" keywords in comments and show cumulative count in `window-status`.<br>👉 [Details](docs/en/FirstTimerCounter.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/FirstTimerCounter.py) |
 
 ---
 

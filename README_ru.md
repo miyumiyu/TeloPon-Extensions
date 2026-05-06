@@ -36,6 +36,7 @@
 | 💬 | [Discord](docs/ru/discord_integration.md) | 1.00 | Комментарии из Discord.<br>👉 [Подробнее](docs/ru/discord_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/discord_integration.py) |
 | 💬 | [Slack](docs/ru/slack_integration.md) | 1.00 | Комментарии из Slack.<br>👉 [Подробнее](docs/ru/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🎮 | [VCI телоп](docs/ru/VciOscPlugin.md) | 1.01 | Телопы в VirtualCast VCI.<br>👉 [Подробнее](docs/ru/VciOscPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
+| ✨ | [Счётчик новичков](docs/ru/FirstTimerCounter.md) | 1.00 | Обнаружение слов «впервые» / «привет» в комментариях и постоянный показ счётчика в `window-status`.<br>👉 [Подробнее](docs/ru/FirstTimerCounter.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/FirstTimerCounter.py) |
 
 ---
 
