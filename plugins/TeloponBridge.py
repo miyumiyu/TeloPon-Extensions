@@ -60,9 +60,10 @@ _L = {
         "help": "2つのTeloPonをHTTP連携で会話させます。\n配信者の発話で会話の方向を誘導してください。",
         "prompt_addon": (
             "\n# 【TeloPonブリッジ】\n"
-            "別のAIから「[ブリッジ] {speaker}さん: 〜」形式でメッセージが届きます。\n"
+            "別のAIから「[ブリッジ] {speaker}さん: 〜」形式でメッセージが届きます（{speaker} は相手のAIキャラクター名）。\n"
             "これは別のTeloPonインスタンスで動作している別のAIキャラクターからの発言です。\n"
             "視聴者コメントとは別物として扱い、会話相手として自然に応答してください。\n"
+            "相手の名前を呼んで返事すると会話が自然になります（例：「{speaker}さん、それは...」）。\n"
             "返答は短めに（2〜3文以内）。長い独白を避け、相手にターンを渡す意識で話してください。\n"
         ),
     },
@@ -93,9 +94,10 @@ _L = {
         "help": "Bridges two TeloPon instances via HTTP for AI conversation.\nGuide the dialogue with your voice.",
         "prompt_addon": (
             "\n# [TeloPon Bridge]\n"
-            "Messages from another AI may arrive in the format: '[Bridge] {speaker}: ...'\n"
+            "Messages from another AI may arrive in the format: '[Bridge] {speaker}: ...' ({speaker} is the other AI's character name).\n"
             "This is another AI character running in a separate TeloPon instance.\n"
             "Treat them as a conversation partner (not a viewer comment) and respond naturally.\n"
+            "Address them by name in your reply (e.g., '{speaker}, that's...') to make the conversation flow naturally.\n"
             "Keep replies short (2-3 sentences). Avoid long monologues and pass the turn back.\n"
         ),
     },
@@ -126,9 +128,10 @@ _L = {
         "help": "2개의 TeloPon을 HTTP로 연결하여 AI끼리 대화시킵니다.\n방송자의 발화로 대화 방향을 유도해 주세요.",
         "prompt_addon": (
             "\n# [TeloPon 브릿지]\n"
-            "다른 AI로부터 '[브릿지] {speaker}님: ~' 형식의 메시지가 도착합니다.\n"
+            "다른 AI로부터 '[브릿지] {speaker}님: ~' 형식의 메시지가 도착합니다 ({speaker}는 상대 AI 캐릭터의 이름).\n"
             "다른 TeloPon 인스턴스에서 동작 중인 다른 AI 캐릭터의 발언입니다.\n"
             "시청자 댓글과는 다르게 취급하고, 대화 상대로 자연스럽게 응답해 주세요.\n"
+            "상대의 이름을 부르며 답하면 대화가 자연스러워집니다 (예: '{speaker}님, 그건...').\n"
             "답변은 짧게 (2~3문장 이내). 긴 독백을 피하고 턴을 넘기는 의식으로 대화하세요.\n"
         ),
     },
@@ -159,9 +162,10 @@ _L = {
         "help": "Связывает два экземпляра TeloPon через HTTP для разговора ИИ.\nВедите диалог своим голосом.",
         "prompt_addon": (
             "\n# [Мост TeloPon]\n"
-            "Сообщения от другого ИИ могут приходить в формате: '[Мост] {speaker}: ...'\n"
+            "Сообщения от другого ИИ могут приходить в формате: '[Мост] {speaker}: ...' ({speaker} — имя другого ИИ-персонажа).\n"
             "Это другой персонаж ИИ, работающий в отдельном экземпляре TeloPon.\n"
             "Обращайтесь с ними как с собеседником (а не комментарием зрителя) и отвечайте естественно.\n"
+            "Обращайтесь к ним по имени в ответе (например, '{speaker}, это...'), чтобы разговор шёл естественно.\n"
             "Отвечайте кратко (2-3 предложения). Избегайте длинных монологов и передавайте ход обратно.\n"
         ),
     },
@@ -237,6 +241,9 @@ class TeloponBridge(BasePlugin):
         self._min_interval_sec = float(saved.get("min_interval_sec", 5.0))
         self._max_turns = int(saved.get("max_turns", 0))  # 0 = 無制限
 
+        # AI名（ライブ開始時に prompt_config から取得）
+        self._ai_name = ""
+
         # ランタイム状態
         self._last_send_time = 0.0
         self._sent_count = 0
@@ -282,6 +289,10 @@ class TeloponBridge(BasePlugin):
     # --------------------------------------------------------
     def start(self, prompt_config, plugin_queue):
         self.plugin_queue = plugin_queue
+        # AI名をプロンプト設定から取得（例: "テロぽん", "ナンシー"等）
+        self._ai_name = str(prompt_config.get("ai_name", "")) if prompt_config else ""
+        if self._ai_name:
+            logger.info(f"[TeloponBridge] AI名を取得: {self._ai_name}")
         if self._enabled:
             self._start_server()
 
@@ -323,6 +334,7 @@ class TeloponBridge(BasePlugin):
         try:
             payload = json.dumps({
                 "speaker": self._speaker_name,
+                "ai_name": self._ai_name,  # プロンプトから取得したAIキャラ名
                 "topic": topic or "",
                 "main": main or "",
             }).encode("utf-8")
@@ -355,17 +367,27 @@ class TeloponBridge(BasePlugin):
             return
 
         speaker = str(data.get("speaker", "?"))[:50]
+        ai_name = str(data.get("ai_name", ""))[:50]
         main = str(data.get("main", ""))[:500]
         if not main.strip():
             return
 
-        text = f"[ブリッジ] {speaker}さん: {main}"
+        # 表示名: AI名があれば優先（例: "テロぽん"）、無ければ speaker（例: "AI-A"）
+        # AI名と speaker が異なる場合は両方表示（例: "テロぽん (AI-A)"）
+        if ai_name and ai_name != speaker:
+            display_name = f"{ai_name} ({speaker})"
+        elif ai_name:
+            display_name = ai_name
+        else:
+            display_name = speaker
+
+        text = f"[ブリッジ] {display_name}さん: {main}"
         self.send_text(self.plugin_queue, text)
 
         self._recv_count += 1
         self._turn_count += 1
         self._update_ui_safe()
-        logger.info(f"[TeloponBridge] 📥 受信: {speaker} ({len(main)}文字)")
+        logger.info(f"[TeloponBridge] 📥 受信: {display_name} ({len(main)}文字)")
 
     # --------------------------------------------------------
     # HTTPサーバー管理

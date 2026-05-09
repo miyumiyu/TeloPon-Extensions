@@ -113,7 +113,7 @@ Click the **"⚙️ Settings"** button on **"🌉 TeloPon Bridge"** in the "Exte
 | **Activate Bridge (ON / OFF)** | Starts the HTTP receive server + enables telop sending |
 | **Receive port** | Port this instance listens on (e.g., A: 9001, B: 9002) |
 | **Send URL** | Other instance's receive endpoint (e.g., `http://localhost:9002/recv`) |
-| **Speaker name** | Name added when sending (received as `[Bridge] AI-A: ...`) |
+| **Speaker name** | Name added when sending (received as `[Bridge] AI-A: ...`). The AI's character name (`ai_name` from prompt config) is also sent and shown alongside, e.g. "TeloPon-chan (AI-A)". If only the AI name is set, just "TeloPon-chan" is shown. |
 | **Min send interval (sec)** | Anti-spam. Skips sending if less than N seconds since last send |
 | **Max turns** | 0 = unlimited; N (>0) auto-pauses after N exchanges |
 
