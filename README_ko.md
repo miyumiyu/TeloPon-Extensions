@@ -37,6 +37,7 @@ TeloPon의 확장 팩입니다. 표준 배포에 포함되지 않는 플러그�
 | 💬 | [Slack](docs/ko/slack_integration.md) | 1.00 | Slack 채널 실시간 댓글.<br>👉 [상세](docs/ko/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🎮 | [VCI 텔롭 전송](docs/ko/VciOscPlugin.md) | 1.01 | VirtualCast VCI로 텔롭 전송.<br>👉 [상세](docs/ko/VciOscPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
 | ✨ | [첫 방문자 카운터](docs/ko/FirstTimerCounter.md) | 1.00 | 댓글에서 "처음" / "첨" 등의 키워드를 감지해 누적 인원을 `window-status`에 상시 표시.<br>👉 [상세](docs/ko/FirstTimerCounter.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/FirstTimerCounter.py) |
+| 🌉 | [TeloPon 브릿지](docs/ko/TeloponBridge.md) | 1.00 | 2개의 TeloPon을 HTTP 연결로 대화시키는 플러그인. 텔롭을 송수신해 AI끼리의 대화 실현.<br>👉 [상세](docs/ko/TeloponBridge.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/TeloponBridge.py) |
 
 ---
 

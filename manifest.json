@@ -155,6 +155,20 @@
       "files": ["XTwitterPlugin.py"],
       "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/XTwitterPlugin.py",
       "bundled_deps": false
+    },
+    {
+      "plugin_id": "telopon_bridge",
+      "name": "🌉 TeloPon ブリッジ",
+      "name_en": "🌉 TeloPon Bridge",
+      "name_ko": "🌉 TeloPon 브릿지",
+      "name_ru": "🌉 Мост TeloPon",
+      "version": "1.00",
+      "description": "2つのTeloPonをHTTP連携で会話させるプラグイン。テロップを送受信してAI同士の対話を実現。",
+      "description_en": "Bridges two TeloPon instances via HTTP for AI-to-AI conversation. Sends/receives telops between them.",
+      "type": "TOOL",
+      "files": ["TeloponBridge.py"],
+      "download_url": "https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/TeloponBridge.py",
+      "bundled_deps": true
     }
   ]
 }

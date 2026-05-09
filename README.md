@@ -43,6 +43,7 @@ TeloPon 内の **「🔧 プラグイン管理」** →「ダウンロード可�
 | 💬 | [Slack](docs/ja/slack_integration.md) | 1.00 | Slackチャンネルのコメントをリアルタイム取得。<br>👉 [詳細はこちら](docs/ja/slack_integration.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/slack_integration.py) |
 | 🎮 | [VCI テロップ送信](docs/ja/VciOscPlugin.md) | 1.01 | VirtualCast VCI へOSCでテロップ送信。<br>👉 [詳細はこちら](docs/ja/VciOscPlugin.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/VciOscPlugin.py) |
 | ✨ | [初見さんカウンター](docs/ja/FirstTimerCounter.md) | 1.00 | コメントから「初見」「おはつ」等のキーワードを検出して累計人数を `window-status` に常時表示。<br>👉 [詳細はこちら](docs/ja/FirstTimerCounter.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/FirstTimerCounter.py) |
+| 🌉 | [TeloPon ブリッジ](docs/ja/TeloponBridge.md) | 1.00 | 2つのTeloPonをHTTP連携で会話させるプラグイン。テロップを送受信してAI同士の対話を実現。<br>👉 [詳細はこちら](docs/ja/TeloponBridge.md) | [📥](https://raw.githubusercontent.com/miyumiyu/TeloPon-Extensions/main/plugins/TeloponBridge.py) |
 
 ---
 
